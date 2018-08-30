@@ -36,6 +36,8 @@ oc rollout pause dc nexus3
 oc patch dc nexus3 --patch='{ "spec": { "strategy": { "type": "Recreate" }}}'
 oc set resources dc nexus3 --limits=memory=2Gi,cpu=2 --requests=memory=1Gi,cpu=1
 
+echo "Before creating PersistentVolumeClaim..." 
+
 echo "apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
