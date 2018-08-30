@@ -1,8 +1,8 @@
 #!/bin/bash
 # Setup Nexus Project
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
     echo "Usage:"
-    echo "  $0 GUID"
+    echo "  $0 GUID USER"
     exit 1
 fi
 
