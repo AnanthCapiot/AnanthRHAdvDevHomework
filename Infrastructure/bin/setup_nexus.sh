@@ -29,6 +29,8 @@ echo "Setting up Nexus in project $GUID-nexus"
 # oc new-app -f ../templates/nexus.yaml --param .....
 
 # To be Implemented by Student
+oc project ${GUID}-nexus
+
 oc new-app sonatype/nexus3:latest
 oc expose svc nexus3
 oc rollout pause dc nexus3
@@ -36,7 +38,7 @@ oc rollout pause dc nexus3
 oc patch dc nexus3 --patch='{ "spec": { "strategy": { "type": "Recreate" }}}'
 oc set resources dc nexus3 --limits=memory=2Gi,cpu=2 --requests=memory=1Gi,cpu=1
 
-echo "Before creating PersistentVolumeClaim..." 
+echo "Before creating PersistentVolumeClaim..."
 
 echo "apiVersion: v1
 kind: PersistentVolumeClaim
@@ -75,6 +77,3 @@ oc expose dc nexus3 --port=5000 --name=nexus-registry
 oc create route edge nexus-registry --service=nexus-registry --port=5000
 
 oc get routes -n ${USER}-nexus
-
-oc annotate route nexus3 console.alpha.openshift.io/overview-app-route=true
-oc annotate route nexus-registry console.alpha.openshift.io/overview-app-route=false
