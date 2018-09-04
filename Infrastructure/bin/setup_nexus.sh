@@ -77,7 +77,7 @@ chmod +x setup_nexus3.sh
 oc expose dc nexus3 --port=5000 --name=nexus-registry
 oc create route edge nexus-registry --service=nexus-registry --port=5000
 
-oc get routes -n ${USER}-nexus
+oc get routes -n ${GUID}-nexus
 
 echo "**********************************************************"
 echo "Completed setup of Nexus Repository!!"
