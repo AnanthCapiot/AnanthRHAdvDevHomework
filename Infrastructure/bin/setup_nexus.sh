@@ -30,7 +30,6 @@ echo "Setting up Nexus in project $GUID-nexus"
 # oc new-app -f ../templates/nexus.yaml --param .....
 
 # To be Implemented by Student
-oc login https://master.na39.openshift.opentlc.com --token=n7QTfvDc7ExFrFuPlqM8-rbWtkwnjiY11e0CQ7VIPfQ
 oc project ${GUID}-nexus
 
 oc new-app sonatype/nexus3:latest
@@ -80,4 +79,7 @@ oc create route edge nexus-registry --service=nexus-registry --port=5000
 
 oc get routes -n ${USER}-nexus
 
-oc project logout
+echo "**********************************************************"
+echo "Completed setup of Nexus Repository!!"
+echo "**********************************************************"
+
