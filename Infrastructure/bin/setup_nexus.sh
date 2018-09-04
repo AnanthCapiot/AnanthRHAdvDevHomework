@@ -7,6 +7,7 @@ if [ "$#" -ne 2 ]; then
 fi
 
 GUID=$1
+USER=$2
 echo "Setting up Nexus in project $GUID-nexus"
 
 # Code to set up the Nexus. It will need to
