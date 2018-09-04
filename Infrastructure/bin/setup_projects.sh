@@ -27,3 +27,6 @@ oc annotate namespace ${GUID}-sonarqube  openshift.io/requester=${USER} --overwr
 oc annotate namespace ${GUID}-jenkins    openshift.io/requester=${USER} --overwrite
 oc annotate namespace ${GUID}-parks-dev  openshift.io/requester=${USER} --overwrite
 oc annotate namespace ${GUID}-parks-prod openshift.io/requester=${USER} --overwrite
+
+# Logout after creating all projects
+oc project logout
