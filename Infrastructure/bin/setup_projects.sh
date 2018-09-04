@@ -9,7 +9,7 @@ fi
 GUID=$1
 USER=$2
 echo "Creating all Homework Projects for GUID=${GUID} and USER=${USER}"
-oc login -u ${USER} -p securityPolicy@1234 https://master.na39.openshift.opentlc.com
+oc login https://master.na39.openshift.opentlc.com --token=n7QTfvDc7ExFrFuPlqM8-rbWtkwnjiY11e0CQ7VIPfQ
 oc new-project ${GUID}-nexus        --display-name="${GUID} AdvDev Homework Nexus"
 oc new-project ${GUID}-sonarqube    --display-name="${GUID} AdvDev Homework Sonarqube"
 oc new-project ${GUID}-jenkins    --display-name="${GUID} AdvDev Homework Jenkins"
