@@ -9,7 +9,8 @@ fi
 GUID=$1
 USER=$2
 echo "Creating all Homework Projects for GUID=${GUID} and USER=${USER}"
-oc login https://master.na39.openshift.opentlc.com --token=n7QTfvDc7ExFrFuPlqM8-rbWtkwnjiY11e0CQ7VIPfQ
+oc login https://master.na39.openshift.opentlc.com -u ${USER} -p securityPolicy@1234
+
 oc new-project ${GUID}-nexus        --display-name="${GUID} AdvDev Homework Nexus"
 oc new-project ${GUID}-sonarqube    --display-name="${GUID} AdvDev Homework Sonarqube"
 oc new-project ${GUID}-jenkins    --display-name="${GUID} AdvDev Homework Jenkins"
@@ -27,6 +28,3 @@ oc annotate namespace ${GUID}-sonarqube  openshift.io/requester=${USER} --overwr
 oc annotate namespace ${GUID}-jenkins    openshift.io/requester=${USER} --overwrite
 oc annotate namespace ${GUID}-parks-dev  openshift.io/requester=${USER} --overwrite
 oc annotate namespace ${GUID}-parks-prod openshift.io/requester=${USER} --overwrite
-
-# Logout after creating all projects
-oc project logout
