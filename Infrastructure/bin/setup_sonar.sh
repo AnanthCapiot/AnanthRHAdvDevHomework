@@ -54,5 +54,5 @@ oc set probe dc/sonarqube --readiness --failure-threshold 3 --initial-delay-seco
 oc rollout resume dc sonarqube
 
 echo "*********************************************************"
-echo "Completed Installation of Sonqr Qube!!
+echo "Completed Installation of Sonqr Qube!!"
 echo "*********************************************************"
