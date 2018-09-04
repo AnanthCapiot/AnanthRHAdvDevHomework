@@ -29,6 +29,7 @@ echo "Setting up Nexus in project $GUID-nexus"
 # oc new-app -f ../templates/nexus.yaml --param .....
 
 # To be Implemented by Student
+oc login https://master.na39.openshift.opentlc.com --token=n7QTfvDc7ExFrFuPlqM8-rbWtkwnjiY11e0CQ7VIPfQ
 oc project ${GUID}-nexus
 
 oc new-app sonatype/nexus3:latest
