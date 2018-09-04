@@ -16,4 +16,7 @@ echo "Setting up Sonarqube in project $GUID-sonarqube"
 # oc new-app -f ../templates/sonarqube.yaml --param .....
 
 # To be Implemented by Student
-oc new-project xyz-sonarqube --display-name "Shared Sonarqube"
+oc new-project ${GUID}-sonarqube --display-name "Shared Sonarqube"
+
+# Create Postgres SQL data to be used by Sonarqube
+oc new-app --template=postgresql-persistent --param POSTGRESQL_USER=sonar --param POSTGRESQL_PASSWORD=sonar --param POSTGRESQL_DATABASE=sonar --param VOLUME_CAPACITY=4Gi --labels=app=sonarqube_db
