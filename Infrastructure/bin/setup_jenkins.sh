@@ -33,8 +33,8 @@ oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi
 chmod +x setup_jenkins_docker_init.sh
 
 mkdir $HOME/jenkins-slave-appdev
-cd  $HOME/jenkins-slave-appdev
 
 # Sudo to Root to run docker commands
 sudo ./setup_jenkins_docker_init.sh ${GUID} ${USER}
 
+cd  $HOME/jenkins-slave-appdev
