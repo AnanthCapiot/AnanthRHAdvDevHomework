@@ -1,3 +1,6 @@
+GUID=$1
+USER=$2
+
 # Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM
 echo "Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM"
 cp /etc/containers/registries.conf /etc/containers/registries.conf.$(date +%Y%m%d%H%M)
@@ -9,3 +12,21 @@ systemctl enable docker
 systemctl start docker
 
 echo "Docker services started..."
+
+command rm -r jenkins-slave-appdev
+mkdir /home/${USER}/jenkins-slave-appdev
+cd  /home/${USER}/jenkins-slave-appdev
+
+echo "FROM docker.io/openshift/jenkins-slave-maven-centos7:v3.9
+USER root
+RUN yum -y install skopeo apb && \
+    yum clean all
+USER 1001" > Dockerfile
+
+docker build . -t docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9
+
+docker login -u wkulhane-redhat.com -p $(oc whoami -t) docker-registry-default.apps.${GUID}.openshift.opentlc.com
+
+docker push docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9
+
+skopeo copy --dest-tls-verify=false --dest-creds=$(oc whoami):$(oc whoami -t) docker-daemon:docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9
