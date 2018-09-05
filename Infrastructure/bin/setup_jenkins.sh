@@ -30,11 +30,10 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 # To be Implemented by Student
 oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=4Gi
 
+mkdir $HOME/jenkins-slave-appdev
+cd  $HOME/jenkins-slave-appdev
+
 # Sudo to Root to run docker commands
 chmod +x setup_jenkins_docker_init.sh
 sudo ./setup_jenkins_docker_init.sh ${USER}
-#sudo -s -H
-#echo "Able to do sudo..."
 
-#mkdir $HOME/jenkins-slave-appdev
-#cd  $HOME/jenkins-slave-appdev
