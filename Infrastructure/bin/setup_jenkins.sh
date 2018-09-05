@@ -29,8 +29,21 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 # To be Implemented by Student
 oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=4Gi --param DISABLE_ADMINISTRATIVE_MONITORS=true
 
+# Sudo to Root to run docker commands
+sudo -i
+
 # Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM
 echo "Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM"
 cp /etc/containers/registries.conf /etc/containers/registries.conf.$(date +%Y%m%d%H%M)
 cd /home/{USER}
 command cp -fr registries.conf /etc/containers/
+
+echo "Enabling Docker and Starting Docker service"
+systemctl enable docker
+systemctl start docker
+
+echo "Exit Sudo..."
+exit
+
+mkdir $HOME/jenkins-slave-appdev
+cd  $HOME/jenkins-slave-appdev
