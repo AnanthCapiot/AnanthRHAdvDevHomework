@@ -42,7 +42,9 @@ echo "Enabling Docker and Starting Docker service"
 systemctl enable docker
 systemctl start docker
 
-echo "Exit Sudo..."
+echo "Docker services started..."
+
+echo "Exiting Sudo..."
 exit
 
 mkdir $HOME/jenkins-slave-appdev
