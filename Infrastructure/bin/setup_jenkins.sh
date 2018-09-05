@@ -35,5 +35,5 @@ cd  $HOME/jenkins-slave-appdev
 
 # Sudo to Root to run docker commands
 chmod +x setup_jenkins_docker_init.sh
-sudo ./setup_jenkins_docker_init.sh ${USER}
+sudo ./setup_jenkins_docker_init.sh ${GUID} ${USER}
 
