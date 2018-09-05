@@ -32,5 +32,5 @@ echo "Login to docker registry successful..."
 docker push docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9
 echo "Push to Docker registry successful..."
 
-skopeo copy --dest-tls-verify=false --dest-creds=$(oc whoami):$(oc whoami -t) docker-daemon:docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9
+skopeo copy --dest-tls-verify=false --dest-creds=$(oc whoami):$(oc whoami -t) docker-daemon:docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.${GUID}.openshift.opentlc.com/${USER}-jenkins/jenkins-slave-maven-appdev:v3.9 && \
 echo "skopeo copy to Docker registry successful..."
