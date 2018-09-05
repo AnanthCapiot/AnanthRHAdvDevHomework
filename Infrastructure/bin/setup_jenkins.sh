@@ -1,15 +1,16 @@
 #!/bin/bash
 # Setup Jenkins Project
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
     echo "Usage:"
-    echo "  $0 GUID REPO CLUSTER"
+    echo "  $0 GUID USER REPO CLUSTER"
     echo "  Example: $0 wkha https://github.com/wkulhanek/ParksMap na39.openshift.opentlc.com"
     exit 1
 fi
 
 GUID=$1
-REPO=$2
-CLUSTER=$3
+USER=$2
+REPO=$3
+CLUSTER=$4
 echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cluster ${CLUSTER}"
 
 # Code to set up the Jenkins project to execute the
