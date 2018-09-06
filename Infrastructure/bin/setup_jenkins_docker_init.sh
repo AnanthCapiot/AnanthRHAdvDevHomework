@@ -1,5 +1,6 @@
 GUID=$1
 USER=$2
+SESSION_TOKEN=$3
 
 # Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM
 echo "Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM"
@@ -26,3 +27,6 @@ echo "Docker file created"...
 
 docker build . -t docker-registry-default.apps.${GUID}.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 && \
 echo "Docker build completed..."
+
+skopeo copy --dest-tls-verify=false --dest-creds=${USER}:${SESSION_TOKEN} docker-daemon:docker-registry-default.apps.${GUID}.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.${GUID}.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
+echo "skopeo copy to Docker registry successful..."
