@@ -13,7 +13,7 @@ systemctl start docker
 
 echo "Docker services started..."
 
-command rm -r jenkins-slave-appdev
+command rm -r /home/${USER}/jenkins-slave-appdev
 mkdir /home/${USER}/jenkins-slave-appdev
 cd  /home/${USER}/jenkins-slave-appdev
 
