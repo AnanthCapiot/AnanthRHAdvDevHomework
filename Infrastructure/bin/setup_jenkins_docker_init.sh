@@ -23,3 +23,6 @@ RUN yum -y install skopeo apb && \
     yum clean all
 USER 1001" > Dockerfile
 echo "Docker file created"...
+
+docker build . -t docker-registry-default.apps.${GUID}.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 && \
+echo "Docker build completed..."
