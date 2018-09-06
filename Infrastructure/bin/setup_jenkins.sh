@@ -34,3 +34,6 @@ chmod +x setup_jenkins_docker_init.sh
 
 # Sudo to Root to run docker commands
 sudo ./setup_jenkins_docker_init.sh ${GUID} ${USER}
+
+echo "skopeo copy --dest-tls-verify=false --dest-creds=$(oc whoami):$(oc whoami -t) docker-daemon:docker-registry-default.apps.${GUID}.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.${GUID}.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9"
+echo "skopeo copy to Docker registry successful..."
