@@ -30,6 +30,8 @@ echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cl
 # To be Implemented by Student
 oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=4Gi
 
+oc set probe dc jenkins --readiness --initial-delay-seconds=500
+
 chmod +x setup_jenkins_docker_init.sh
 
 # Sudo to Root to run docker commands
