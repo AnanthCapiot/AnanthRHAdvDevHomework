@@ -25,8 +25,8 @@ RUN yum -y install skopeo apb && \
 USER 1001" > Dockerfile
 echo "Docker file created"...
 
-docker build . -t docker-registry-default.apps.${GUID}.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 && \
+docker build . -t docker-registry-default.apps.na39.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 && \
 echo "Docker build completed..."
 
-skopeo copy --dest-tls-verify=false --dest-creds=${USER}:${SESSION_TOKEN} docker-daemon:docker-registry-default.apps.na30.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.na39.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
+skopeo copy --dest-tls-verify=false --dest-creds=${USER}:${SESSION_TOKEN} docker-daemon:docker-registry-default.apps.na39.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.na39.openshift.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
 echo "skopeo copy to Docker registry successful..."
