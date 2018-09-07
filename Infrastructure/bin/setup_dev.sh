@@ -1,12 +1,14 @@
 #!/bin/bash
 # Setup Development Project
-if [ "$#" -ne 1 ]; then
+if [ "$#" -ne 2 ]; then
     echo "Usage:"
-    echo "  $0 GUID"
+    echo "  $0 GUID USER"
     exit 1
 fi
 
 GUID=$1
+USER=$2
+
 echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
 # Code to set up the parks development project.
@@ -16,5 +18,5 @@ oc project ${GUID}-parks-dev
 echo "Building Mongo DB Project"
 
 cd ../templates
-oc create -f 
-oc create -f 
+oc create -f dev-mongodb-configmaps.yml
+oc create -f dev-mongodb-template.yml
