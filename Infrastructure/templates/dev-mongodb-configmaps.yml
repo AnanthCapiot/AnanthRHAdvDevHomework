@@ -7,4 +7,3 @@ data:
 kind: ConfigMap
 metadata:  
   name: mongodb-dev-config-map
-  namespace: mongodb-test
