@@ -6,4 +6,4 @@ data:
   MONGODB_USER: mongodb
 kind: ConfigMap
 metadata:  
-  name: mongodb-dev-config-map
+  name: dev-mongodb-config-map
