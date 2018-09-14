@@ -20,3 +20,7 @@ echo "Building Mongo DB Project"
 cd ../templates
 oc create -f dev-mongodb-configmaps.yml
 oc create -f dev-mongodb-template.yml
+
+oc create -f mlb-parks-app-config-map.yml
+oc create -f national-parks-app-config-map.yml
+oc create -f parks-map-app-config-map.yml
