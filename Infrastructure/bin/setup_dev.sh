@@ -24,3 +24,25 @@ oc create -f dev-mongodb-template.yml
 oc create -f mlb-parks-app-config-map.yml
 oc create -f national-parks-app-config-map.yml
 oc create -f parks-map-app-config-map.yml
+
+# Building MLBParks application
+git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
+cd $HOME/${GUID}AdvDevHomework/MLBParks/
+mvn -s ../nexus_settings.xml clean package -DskipTests=true
+
+# Do we need to start and test the app? (like in our labs)
+
+echo "Create a binary build called MLBParks-binary"
+oc new-build --binary=true --name=MLBParks-binary --image-stream=jboss-eap70-openshift:1.7
+
+echo "Starting build and streaming compiled war file to Build"
+oc start-build MLBParks-binary --from-file=$HOME/${GUID}AdvDevHomework/MLBParks/target/mlbparks-1.0.war --follow
+
+oc new-app MLBParks-binary
+oc expose svc/MLBParks-binary --port=8080
+
+curl http://$(oc get route MLBParks-binary --template='{{ .spec.host }}')/ws/healthz/
+curl http://$(oc get route MLBParks-binary --template='{{ .spec.host }}')/ws/info/
+
+The endpoint /ws/data/load/ creates the data in the MongoDB database and will need to be called (preferably with a post-deployment-hook) once the Pod is running.
+#curl http://$(oc get route MLBParks-binary --template='{{ .spec.host }}')/ws/data/load/
