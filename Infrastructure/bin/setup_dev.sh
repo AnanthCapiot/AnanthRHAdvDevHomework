@@ -40,8 +40,8 @@ oc start-build mlbparks-binary --from-file=$HOME/${GUID}AdvDevHomework/MLBParks/
 oc new-app mlbparks-binary && \
 oc expose svc/mlbparks-binary --port=8080 && \
 
-curl http://$(oc get route mlbparks-binary --template='{{ .spec.host }}')/ws/healthz/
-curl http://$(oc get route mlbparks-binary --template='{{ .spec.host }}')/ws/info/
+#curl http://$(oc get route mlbparks-binary --template='{{ .spec.host }}')/ws/healthz/
+#curl http://$(oc get route mlbparks-binary --template='{{ .spec.host }}')/ws/info/
 
-echo "The endpoint /ws/data/load/ creates the data in the MongoDB database and will need to be called (preferably with a post-deployment-hook) once the Pod is running."
+#echo "The endpoint /ws/data/load/ creates the data in the MongoDB database and will need to be called (preferably with a post-deployment-hook) once the Pod is running."
 #curl http://$(oc get route MLBParks-binary --template='{{ .spec.host }}')/ws/data/load/
