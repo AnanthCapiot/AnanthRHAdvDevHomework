@@ -49,3 +49,11 @@ oc start-build nationalparks-binary --from-file=$HOME/${GUID}AdvDevHomework/Nati
 oc new-app nationalparks-binary && \
 oc expose svc/nationalparks-binary --port=8080
 echo "Completed building of National Parks application..."
+
+cd $HOME/${GUID}AdvDevHomework/ParksMap
+mvn -s ../nexus_settings.xml clean package spring-boot:repackage -DskipTests -Dcom.redhat.xpaas.repo.redhatga
+oc new-build --binary=true --name=parksmap-binary --image-stream=redhat-openjdk18-openshift:1.2
+oc start-build parksmap-binary --from-file=$HOME/${GUID}AdvDevHomework/ParksMap/target/parksmap.jar --follow
+oc new-app parksmap-binary  
+oc expose svc/parksmap-binary --port=8080
+echo "Completed building of Parks Map application..."
