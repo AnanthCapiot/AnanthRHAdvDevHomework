@@ -38,4 +38,4 @@ echo "Starting build and streaming compiled war file to Build"
 oc start-build mlbparks-binary --from-file=$HOME/${GUID}AdvDevHomework/MLBParks/target/mlbparks.war --follow && \
 
 oc new-app mlbparks-binary && \
-oc expose svc/mlbparks-binary --port=8080 && \
+oc expose svc/mlbparks-binary --port=8080
