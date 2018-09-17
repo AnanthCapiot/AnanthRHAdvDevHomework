@@ -21,9 +21,9 @@ cd ../templates
 oc create -f dev-mongodb-configmaps.yml
 oc create -f dev-mongodb-template.yml
 
-oc create -f mlb-parks-app-config-map.yml
-oc create -f national-parks-app-config-map.yml
-oc create -f parks-map-app-config-map.yml
+oc create -f dev-mlb-parks-app-config-map.yml
+oc create -f dev-national-parks-app-config-map.yml
+oc create -f dev-parks-map-app-config-map.yml
 
 # Building MLBParks application
 git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
