@@ -36,7 +36,7 @@ echo "Create a binary build called mlbparks-binary"
 oc new-build --binary=true --name=mlbparks-binary --image-stream=jboss-eap70-openshift:1.7
 
 echo "Starting build and streaming compiled war file to Build"
-oc start-build mlbparks-binary --from-file=$HOME/${GUID}AdvDevHomework/MLBParks/target/mlbparks-1.0.war --follow
+oc start-build mlbparks-binary --from-file=$HOME/${GUID}AdvDevHomework/MLBParks/target/mlbparks.war --follow
 
 oc new-app mlbparks-binary
 oc expose svc/mlbparks-binary --port=8080
