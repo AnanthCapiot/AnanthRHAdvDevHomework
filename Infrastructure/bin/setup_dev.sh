@@ -27,9 +27,8 @@ oc create -f dev-mongodb-template.yml && \
 # Building MLBParks application
 git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
 cd $HOME/${GUID}AdvDevHomework/MLBParks/
-mvn -s ../nexus_settings.xml clean package -DskipTests=true && \
 
-# Do we need to start and test the app? (like in our labs)
+mvn -s ../nexus_settings.xml clean package -DskipTests=true && \
 
 echo "Create a binary build called mlbparks-binary"
 oc new-build --binary=true --name=mlbparks-binary --image-stream=jboss-eap70-openshift:1.7 && \
@@ -39,3 +38,14 @@ oc start-build mlbparks-binary --from-file=$HOME/${GUID}AdvDevHomework/MLBParks/
 
 oc new-app mlbparks-binary && \
 oc expose svc/mlbparks-binary --port=8080
+
+echo "MLBParks application deployed successfully..."
+
+echo "Begin building of National Parks application..."
+cd $HOME/${GUID}AdvDevHomework/NationalParks/
+mvn -s ../nexus_settings.xml clean package -DskipTests=true && \
+oc new-build --binary=true --name=nationalparks-binary --image-stream=redhat-openjdk18-openshift:1.2 && \
+oc start-build nationalparks-binary --from-file=$HOME/${GUID}AdvDevHomework/Nationalparks/target/nationalparks.jar --follow && \
+oc new-app nationalparks-binary && \
+oc expose svc/nationalparks-binary --port=8080
+echo "Completed building of National Parks application..."
