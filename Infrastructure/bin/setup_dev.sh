@@ -32,17 +32,17 @@ mvn -s ../nexus_settings.xml clean package -DskipTests=true
 
 # Do we need to start and test the app? (like in our labs)
 
-echo "Create a binary build called MLBParks-binary"
-oc new-build --binary=true --name=MLBParks-binary --image-stream=jboss-eap70-openshift:1.7
+echo "Create a binary build called mlbparks-binary"
+oc new-build --binary=true --name=mlbparks-binary --image-stream=jboss-eap70-openshift:1.7
 
 echo "Starting build and streaming compiled war file to Build"
-oc start-build MLBParks-binary --from-file=$HOME/${GUID}AdvDevHomework/MLBParks/target/mlbparks-1.0.war --follow
+oc start-build mlbparks-binary --from-file=$HOME/${GUID}AdvDevHomework/MLBParks/target/mlbparks-1.0.war --follow
 
-oc new-app MLBParks-binary
-oc expose svc/MLBParks-binary --port=8080
+oc new-app mlbparks-binary
+oc expose svc/mlbparks-binary --port=8080
 
-curl http://$(oc get route MLBParks-binary --template='{{ .spec.host }}')/ws/healthz/
-curl http://$(oc get route MLBParks-binary --template='{{ .spec.host }}')/ws/info/
+curl http://$(oc get route mlbparks-binary --template='{{ .spec.host }}')/ws/healthz/
+curl http://$(oc get route mlbparks-binary --template='{{ .spec.host }}')/ws/info/
 
 The endpoint /ws/data/load/ creates the data in the MongoDB database and will need to be called (preferably with a post-deployment-hook) once the Pod is running.
 #curl http://$(oc get route MLBParks-binary --template='{{ .spec.host }}')/ws/data/load/
