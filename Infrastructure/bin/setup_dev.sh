@@ -17,7 +17,7 @@ oc project ${GUID}-parks-dev
 # To be Implemented by Student
 echo "Building Mongo DB Project"
 
-cd ../templates
+cd $HOME/eb90AdvDevHomework/Infrastructure/templates
 oc create -f dev-mongodb-configmaps.yml
 oc create -f dev-mongodb-template.yml
 
