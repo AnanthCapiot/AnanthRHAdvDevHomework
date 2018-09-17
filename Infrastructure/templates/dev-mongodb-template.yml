@@ -1,7 +1,11 @@
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
-  name: mongodb
+  annotations:
+    template.alpha.openshift.io/wait-for-ready: 'true'
+  labels:
+    template: mongodb-persistent-template
+  name: mongodb  
 spec:
   replicas: 1
   selector:
@@ -39,7 +43,7 @@ spec:
                 configMapKeyRef:
                   key: MONGODB_DATABASE
                   name: dev-mongodb-config-map
-          image: openshift/mongodb-24-centos7
+          image: 'registry.access.redhat.com/rhscl/mongodb-34-rhel7:latest'
           imagePullPolicy: IfNotPresent
           livenessProbe:
             failureThreshold: 3
@@ -69,7 +73,7 @@ spec:
             timeoutSeconds: 1
           resources:
             limits:
-              memory: 512Mi
+              memory: 1Gi
           securityContext:
             capabilities: {}
             privileged: false
