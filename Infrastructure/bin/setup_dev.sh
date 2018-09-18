@@ -69,9 +69,6 @@ echo "Building Mongo DB Project"
 
 cd $HOME/eb90AdvDevHomework/Infrastructure/templates
 oc create -f dev-mongodb-configmaps.yml && \
-oc create -f dev-mlb-parks-app-config-map.yml && \
-oc create -f dev-national-parks-app-config-map.yml && \
-oc create -f dev-parks-map-app-config-map.yml && \
 oc create -f dev-mongodb-template.yml && \
 
 # Building MLBParks application
@@ -85,7 +82,9 @@ oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imag
 
 oc set triggers dc/mlbparks --remove-all -n ${GUID}-parks-dev && \
 
-oc env dc/mlbparks --from=configmap/dev-mlb-parks-app-config-map -n ${GUID}-parks-dev && \
+oc create configmap mongodb-config-map --from-literal="dev-mongodb-config.properties=Placeholder" -n ${GUID}-parks-dev \n
+
+oc env dc/mlbparks --from=configmap/mongodb-config-map -n ${GUID}-parks-dev && \
 
 oc expose dc mlbparks --port 8080 -n ${GUID}-parks-dev && \
 
