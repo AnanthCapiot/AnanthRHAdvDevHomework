@@ -85,6 +85,8 @@ oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imag
 
 oc set triggers dc/mlbparks --remove-all -n ${GUID}-parks-dev && \
 
+oc env dc/mlbparks --from=configmap/dev-mlb-parks-app-config-map -n ${GUID}-parks-dev && \
+
 oc expose dc mlbparks --port 8080 -n ${GUID}-parks-dev && \
 
 oc expose svc mlbparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
