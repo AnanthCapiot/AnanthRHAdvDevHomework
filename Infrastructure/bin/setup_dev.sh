@@ -61,7 +61,7 @@ oc expose svc/parksmap-binary --port=8080
 echo "Completed building of Parks Map application..."
 fi
 
-echo "Setting Policy for Jenkins user to ${GUID}-parks-dev project
+echo "Setting Policy for Jenkins user to ${GUID}-parks-dev project"
 oc policy add-role-to-user edit system:serviceaccount:jenkins:jenkins -n ${GUID}-parks-dev
 
 # To be Implemented by Student
