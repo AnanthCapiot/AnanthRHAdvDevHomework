@@ -13,6 +13,8 @@ echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
 # Code to set up the parks development project.
 oc project ${GUID}-parks-dev
+if false
+then
 
 # To be Implemented by Student
 echo "Building Mongo DB Project"
@@ -57,3 +59,34 @@ oc start-build parksmap-binary --from-file=$HOME/${GUID}AdvDevHomework/ParksMap/
 oc new-app parksmap-binary  
 oc expose svc/parksmap-binary --port=8080
 echo "Completed building of Parks Map application..."
+fi
+
+echo "Setting Policy for Jenkins user to ${GUID}-parks-dev project
+oc policy add-role-to-user edit system:serviceaccount:jenkins:jenkins -n ${GUID}-parks-dev
+
+# To be Implemented by Student
+echo "Building Mongo DB Project"
+
+cd $HOME/eb90AdvDevHomework/Infrastructure/templates
+oc create -f dev-mongodb-configmaps.yml && \
+oc create -f dev-mlb-parks-app-config-map.yml && \
+oc create -f dev-national-parks-app-config-map.yml && \
+oc create -f dev-parks-map-app-config-map.yml && \
+oc create -f dev-mongodb-template.yml && \
+
+# Building MLBParks application
+git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
+cd $HOME/${GUID}AdvDevHomework/MLBParks/
+
+# Set up Dev Application
+oc new-build --binary=true --name="mlbparks" jboss-eap70-openshift:1.7 -n ${GUID}-parks-dev && \
+
+oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev -e APPNAME="MLB Parks (Dev)" && \
+
+oc set triggers dc/mlbparks --remove-all -n ${GUID}-parks-dev && \
+
+oc expose dc mlbparks --port 8080 -n ${GUID}-parks-dev && \
+
+oc expose svc mlbparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
+
+echo "Completed exposing mlbparks application/service successfully ***"
