@@ -35,7 +35,7 @@ echo "StatefulSet MongoDB created Successfully"
 
 echo ">>>> Creating Blue Application environment for MLBParks Application"
 # Create MLBParks Blue Application
-oc new-app mlbparks/mlbparks:0.0 --name=mlbparks-blue --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
+oc new-app mlbparks/mlbparks:0.0 --name=mlbparks-blue -e APPNAME="MLB Parks (Blue)" --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
 oc set triggers dc/mlbparks-blue --remove-all -n ${GUID}-parks-prod
 oc expose dc mlbparks-blue --port 8080 -n ${GUID}-parks-prod
 
