@@ -11,6 +11,8 @@ USER=$2
 
 echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
+git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
+
 # Code to set up the parks development project.
 oc project ${GUID}-parks-dev
 if false
@@ -24,10 +26,18 @@ oc create -f dev-mongodb-configmaps.yml && \
 oc create -f dev-mlb-parks-app-config-map.yml && \
 oc create -f dev-national-parks-app-config-map.yml && \
 oc create -f dev-parks-map-app-config-map.yml && \
-oc create -f dev-mongodb-template.yml && \
+
+oc new-app --name=mongodb -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=parks -e MONGODB_ADMIN_PASSWORD=mongodb registry.access.redhat.com/rhscl/mongodb-34-rhel7:latest && \
+
+oc rollout pause dc/mongodb && \
+
+oc env dc/mongodb --from=configmap/dev-mongodb-config-map && \
+
+oc create -f dev-mongodb-pvc-template.yml && \
+
+oc rollout resume dc/mongodb && \
 
 # Building MLBParks application
-git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
 cd $HOME/${GUID}AdvDevHomework/MLBParks/
 
 mvn -s ../nexus_settings.xml clean package -DskipTests=true && \
