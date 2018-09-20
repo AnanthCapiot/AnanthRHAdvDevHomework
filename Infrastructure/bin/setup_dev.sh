@@ -79,3 +79,20 @@ oc expose dc nationalparks --port 8080 -n ${GUID}-parks-dev && \
 oc expose svc nationalparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
 
 echo ">>>>>>>> Completed exposing NationalParks application/service successfully <<<<<<<<<"
+
+echo "Begin building of Parks Map application..."
+cd $HOME/${GUID}AdvDevHomework/ParksMap
+
+oc new-build --binary=true --name=parksmap --image-stream=redhat-openjdk18-openshift:1.2 && \
+
+oc new-app ${GUID}-parks-dev/parksmap:0.0-0 --name=parksmap --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev -e APPNAME="Parks Map (Dev)" && \
+
+oc set triggers dc/parksmap --remove-all -n ${GUID}-parks-dev && \
+
+oc env dc/parksmap --from=configmap/mongodb-config-map -n ${GUID}-parks-dev && \
+
+oc expose dc parksmap --port 8080 -n ${GUID}-parks-dev && \
+
+oc expose svc parksmap -n ${GUID}-parks-dev -l type=parksmap-backend && \
+
+echo ">>>>>>>> Completed exposing Parks Map application/service successfully <<<<<<<<<"
