@@ -37,7 +37,7 @@ echo "StatefulSet MongoDB created Successfully"
 
 echo ">>>> Creating Blue Application environment for MLBParks Application"
 
-oc create configmap prod-mongodb-config-map --from-literal="prod-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-dev \n
+oc create configmap prod-mongodb-config-map --from-literal="prod-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-prod \n
 
 # Create MLBParks Blue Application
 oc new-app mlbparks/mlbparks:0.0 --name=mlbparks-blue -e APPNAME="MLB Parks (Blue)" --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
