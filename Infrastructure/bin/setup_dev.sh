@@ -53,9 +53,9 @@ oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imag
 
 oc set triggers dc/mlbparks --remove-all -n ${GUID}-parks-dev && \
 
-oc create configmap dev-mongodb-config-map --from-literal="dev-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-dev \n
+oc create configmap dev-application-mongodb-config-map --from-literal="dev-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-dev \n
 
-oc env dc/mlbparks --from=configmap/dev-mongodb-config-map -n ${GUID}-parks-dev && \
+oc env dc/mlbparks --from=configmap/dev-application-mongodb-config-map -n ${GUID}-parks-dev && \
 
 oc expose dc mlbparks --port 8080 -n ${GUID}-parks-dev && \
 
@@ -72,7 +72,7 @@ oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 --name=nationalparks --allow-mi
 
 oc set triggers dc/nationalparks --remove-all -n ${GUID}-parks-dev && \
 
-oc env dc/nationalparks --from=configmap/dev-mongodb-config-map -n ${GUID}-parks-dev && \
+oc env dc/nationalparks --from=configmap/dev-application-mongodb-config-map -n ${GUID}-parks-dev && \
 
 oc expose dc nationalparks --port 8080 -n ${GUID}-parks-dev && \
 
@@ -89,7 +89,7 @@ oc new-app ${GUID}-parks-dev/parksmap:0.0-0 --name=parksmap --allow-missing-imag
 
 oc set triggers dc/parksmap --remove-all -n ${GUID}-parks-dev && \
 
-oc env dc/parksmap --from=configmap/dev-mongodb-config-map -n ${GUID}-parks-dev && \
+oc env dc/parksmap --from=configmap/dev-application-mongodb-config-map -n ${GUID}-parks-dev && \
 
 oc expose dc parksmap --port 8080 -n ${GUID}-parks-dev && \
 
