@@ -11,8 +11,8 @@ USER=$2
 
 echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
-git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
-git reset --hard HEAD && git pull origin master
+#git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
+#git reset --hard HEAD && git pull origin master
 
 # Code to set up the parks development project.
 oc project ${GUID}-parks-dev
@@ -21,7 +21,7 @@ echo "Setting Policy for Jenkins user to ${GUID}-parks-dev project"
 oc policy add-role-to-user edit system:serviceaccount:jenkins:jenkins -n ${GUID}-parks-dev
 
 echo "Trying Git clone for project sources"
-git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
+#git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
 
 # To be Implemented by Student
 echo "Building Mongo DB Project"
@@ -85,7 +85,7 @@ echo ">>>>>>>> Completed exposing MLB Parks application/service successfully <<<
 
 echo "Begin building of National Parks application..."
 cd $HOME/${GUID}AdvDevHomework/NationalParks/
-mvn -s ../nexus_settings.xml clean package -DskipTests=true && \
+
 oc new-build --binary=true --name=nationalparks --image-stream=redhat-openjdk18-openshift:1.2 && \
 
 oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 --name=nationalparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev -e APPNAME="National Parks (Dev)" && \
