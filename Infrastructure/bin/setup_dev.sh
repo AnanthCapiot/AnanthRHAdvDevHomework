@@ -64,7 +64,7 @@ oc expose svc mlbparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
 echo ">>>>>>>> Completed exposing MLB Parks application/service successfully <<<<<<<<<"
 
 echo "Begin building of National Parks application..."
-cd $HOME/${GUID}AdvDevHomework/NationalParks/
+cd $HOME/${GUID}AdvDevHomework/Nationalparks/
 
 oc new-build --binary=true --name=nationalparks --image-stream=redhat-openjdk18-openshift:1.2 && \
 
