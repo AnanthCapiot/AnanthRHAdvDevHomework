@@ -52,5 +52,5 @@ oc expose dc mlbparks-green --port 8080 -n ${GUID}-parks-prod
 oc env dc/mlbparks-green --from=configmap/prod-mongodb-config-map
 
 # Expose Blue service as route to make blue application active
-oc expose svc/mlbparks-blue --name mlbparks -n ${GUID}-mlbparks-prod
+oc expose svc/mlbparks-blue --name mlbparks -n ${GUID}-parks-prod
 
