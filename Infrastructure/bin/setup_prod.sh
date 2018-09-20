@@ -34,10 +34,15 @@ echo "StatefulSet MongoDB created Successfully"
 # To be Implemented by Student
 
 echo ">>>> Creating Blue Application environment for MLBParks Application"
-# Create Blue Application
+# Create MLBParks Blue Application
 oc new-app mlbparks/mlbparks:0.0 --name=mlbparks-blue --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
 oc set triggers dc/mlbparks-blue --remove-all -n ${GUID}-parks-prod
 oc expose dc mlbparks-blue --port 8080 -n ${GUID}-parks-prod
+
+# Create MLBParks Green Application
+oc new-app mlbparks/mlbparks:0.0 --name=mlbparks-green --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
+oc set triggers dc/mlbparks-green --remove-all -n ${GUID}-parks-prod
+oc expose dc mlbparks-green --port 8080 -n ${GUID}-parks-prod
 
 # Expose Blue service as route to make blue application active
 oc expose svc/mlbparks-blue --name mlbparks -n ${GUID}-mlbparks-prod
