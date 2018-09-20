@@ -40,13 +40,13 @@ echo ">>>> Creating Blue Application environment for MLBParks Application"
 oc create configmap prod-mongodb-config-map --from-literal="prod-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-prod \n
 
 # Create MLBParks Blue Application
-oc new-app ${GUID}-mlbparks-dev/mlbparks:0.0 --name=mlbparks-blue -e APPNAME="MLB Parks (Blue)" --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
+oc new-app ${GUID}-parks-dev/mlbparks:0.0 --name=mlbparks-blue -e APPNAME="MLB Parks (Blue)" --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
 oc set triggers dc/mlbparks-blue --remove-all -n ${GUID}-parks-prod
 oc expose dc mlbparks-blue --port 8080 -n ${GUID}-parks-prod
 oc env dc/mlbparks-blue --from=configmap/prod-mongodb-config-map
 
 # Create MLBParks Green Application
-oc new-app ${GUID}-mlbparks-dev/mlbparks:0.0 --name=mlbparks-green --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
+oc new-app ${GUID}-parks-dev/mlbparks:0.0 --name=mlbparks-green --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
 oc set triggers dc/mlbparks-green --remove-all -n ${GUID}-parks-prod
 oc expose dc mlbparks-green --port 8080 -n ${GUID}-parks-prod
 oc env dc/mlbparks-green --from=configmap/prod-mongodb-config-map
