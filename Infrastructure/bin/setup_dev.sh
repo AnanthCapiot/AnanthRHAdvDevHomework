@@ -41,6 +41,7 @@ oc create -f dev-mongodb-pvc-template.yml && \
 
 oc rollout resume dc/mongodb && \
 
+echo "Setting up MLBParks Application"
 # Building MLBParks application
 cd $HOME/${GUID}AdvDevHomework/MLBParks/
 
@@ -59,4 +60,42 @@ oc expose dc mlbparks --port 8080 -n ${GUID}-parks-dev && \
 
 oc expose svc mlbparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
 
-echo "Completed exposing mlbparks application/service successfully ***"
+echo ">>>>>>>> Completed exposing mlbparks application/service successfully <<<<<<<<<"
+
+echo "Setting up MLBParks Application"
+# Building MLBParks application
+cd $HOME/${GUID}AdvDevHomework/MLBParks/
+
+# Set up Dev Application
+oc new-build --binary=true --name="mlbparks" jboss-eap70-openshift:1.7 -n ${GUID}-parks-dev && \
+
+oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev -e APPNAME="MLB Parks (Dev)" && \
+
+oc set triggers dc/mlbparks --remove-all -n ${GUID}-parks-dev && \
+
+oc create configmap mongodb-config-map --from-literal="dev-mongodb-config.properties=Placeholder" -n ${GUID}-parks-dev \n
+
+oc env dc/mlbparks --from=configmap/mongodb-config-map -n ${GUID}-parks-dev && \
+
+oc expose dc mlbparks --port 8080 -n ${GUID}-parks-dev && \
+
+oc expose svc mlbparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
+
+echo ">>>>>>>> Completed exposing MLB Parks application/service successfully <<<<<<<<<"
+
+echo "Begin building of National Parks application..."
+cd $HOME/${GUID}AdvDevHomework/NationalParks/
+mvn -s ../nexus_settings.xml clean package -DskipTests=true && \
+oc new-build --binary=true --name=nationalparks --image-stream=redhat-openjdk18-openshift:1.2 && \
+
+oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 --name=nationalparks --allow-missing-imagestream-tags=true -n ${GUID}-parks-dev -e APPNAME="National Parks (Dev)" && \
+
+oc set triggers dc/nationalparks --remove-all -n ${GUID}-parks-dev && \
+
+oc env dc/nationalparks --from=configmap/mongodb-config-map -n ${GUID}-parks-dev && \
+
+oc expose dc nationalparks --port 8080 -n ${GUID}-parks-dev && \
+
+oc expose svc nationalparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
+
+echo ">>>>>>>> Completed exposing NationalParks application/service successfully <<<<<<<<<"
