@@ -37,7 +37,7 @@ oc env dc/mongodb --from=configmap/dev-mongodb-config-map && \
 
 oc create -f dev-mongodb-pvc-template.yml && \
 
-oc set probe dc/mongodb --readiness --failure-threshold 3 --initial-delay-seconds 60 -- "mongo 127.0.0.1:27017/parks -u mongodb -p mongodb --eval='quit()'" && \
+oc set probe dc/mongodb --readiness --failure-threshold 3 --initial-delay-seconds 60 -- "oc set probe dc/mongodb --readiness --failure-threshold 3 --initial-delay-seconds 60 -- "/bin/sh '-i' '-c' > - mongo 127.0.0.1:27017/parks -u mongodb -p mongodb --eval='quit()'" && \
 
 oc rollout resume dc/mongodb && \
 
