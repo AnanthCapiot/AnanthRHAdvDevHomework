@@ -96,3 +96,25 @@ oc expose dc parksmap --port 8080 -n ${GUID}-parks-dev && \
 oc expose svc parksmap -n ${GUID}-parks-dev -l type=parksmap-backend && \
 
 echo ">>>>>>>> Completed exposing Parks Map application/service successfully <<<<<<<<<"
+
+oc patch dc/mlbparks --patch "spec: { strategy: {type: Rolling, rollingParams: {post: {failurePolicy: Ignore, execNewPod: {containerName: mlbparks, command: ['curl -XGET http://localhost:8080/ws/data/load/']}}}}}"
+oc patch dc/nationalparks --patch "spec: { strategy: {type: Rolling, rollingParams: {post: {failurePolicy: Ignore, execNewPod: {containerName: nationalparks, command: ['curl -XGET http://localhost:8080/ws/data/load/']}}}}}"
+
+oc set probe dc/mlbparks --liveness --failure-threshold 3 --initial-delay-seconds 60 -- echo ok
+oc set probe dc/mlbparks --readiness --failure-threshold 3 --initial-delay-seconds 60 --get-url=http://:8080/ws/healthz/
+
+oc set probe dc/nationalparks --liveness --failure-threshold 3 --initial-delay-seconds 60 -- echo ok
+oc set probe dc/nationalparks --readiness --failure-threshold 3 --initial-delay-seconds 60 --get-url=http://:8080/ws/healthz/
+
+echo "apiVersion: v1
+kind: Service
+metadata:
+    name: parksmap-backend
+    labels:
+        type: parksmap-backend
+spec:
+    selector:
+        type: parksmap-backend
+    ports:
+    - protocol: TCP
+      port: 8080" | oc create -f -
