@@ -12,6 +12,7 @@ USER=$2
 echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
 git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
+git reset --hard HEAD && git pull origin master
 
 # Code to set up the parks development project.
 oc project ${GUID}-parks-dev
