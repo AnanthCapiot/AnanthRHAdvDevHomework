@@ -13,6 +13,7 @@ echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
 #git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
 #git reset --hard HEAD && git pull origin master
+sudo chmod +x *.sh
 
 # Code to set up the parks development project.
 oc project ${GUID}-parks-dev
