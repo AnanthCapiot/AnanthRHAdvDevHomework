@@ -9,6 +9,11 @@ fi
 GUID=$1
 echo "Setting up Parks Production Environment in project ${GUID}-parks-prod"
 
+oc project ${GUID}-parks-prod
+
+oc policy add-role-to-user edit system:serviceaccount:jenkins:jenkins -n ${GUID}-parks-prod
+oc policy add-role-to-group edit system:image-puller system:service-accounts:${GUID}-parks-prod -n ${GUID}-parks-prod
+
 git reset --hard HEAD && git pull origin master
 
 echo "Creating Headless Service"
