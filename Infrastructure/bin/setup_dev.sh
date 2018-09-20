@@ -53,7 +53,7 @@ oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 --name=mlbparks --allow-missing-imag
 
 oc set triggers dc/mlbparks --remove-all -n ${GUID}-parks-dev && \
 
-oc create configmap mongodb-config-map --from-literal="dev-mongodb-config.properties=Placeholder" -n ${GUID}-parks-dev \n
+oc create configmap mongodb-config-map --from-literal="dev-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-dev \n
 
 oc env dc/mlbparks --from=configmap/mongodb-config-map -n ${GUID}-parks-dev && \
 
