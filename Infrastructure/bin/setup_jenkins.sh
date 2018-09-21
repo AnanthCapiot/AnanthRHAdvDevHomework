@@ -13,6 +13,8 @@ REPO=$3
 CLUSTER=$4
 echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cluster ${CLUSTER}"
 
+oc project ${GUID}-jenkins
+
 # Code to set up the Jenkins project to execute the
 # three pipelines.
 # This will need to also build the custom Maven Slave Pod
