@@ -69,7 +69,7 @@ oc env dc/nationalparks-blue --from=configmap/prod-mongodb-blue-config-map
 oc new-app ${GUID}-parks-dev/nationalparks:0.0 --name=nationalparks-green --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
 oc set triggers dc/nationalparks-green --remove-all -n ${GUID}-parks-prod
 oc expose dc nationalparks-green --port 8080 -n ${GUID}-parks-prod
-oc env dc/nationalparks-green --from=configmap/prod-mongodb-greeen-config-map
+oc env dc/nationalparks-green --from=configmap/prod-mongodb-green-config-map
 
 # Expose Blue service as route to make blue application active
 oc expose svc/nationalparks-blue --name nationalparks -n ${GUID}-parks-prod
