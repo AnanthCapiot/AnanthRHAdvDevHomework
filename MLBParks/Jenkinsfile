@@ -36,7 +36,7 @@ podTemplate(
 	// and not inside the scope of a stage - otherwise they would not
 	// be accessible from other stages.
 	echo "Current directory is:"
-	sh pwd
+	sh "pwd"
 	echo "Listing current directory"  	  
 	sh "ls -lrt"
 	echo "Completed listing dir"
