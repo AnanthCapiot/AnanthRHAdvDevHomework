@@ -19,7 +19,7 @@ sudo chmod +x *.sh
 oc project ${GUID}-parks-dev
 
 echo "Setting Policy for Jenkins user to ${GUID}-parks-dev project"
-oc policy add-role-to-user edit system:serviceaccount:jenkins:jenkins -n ${GUID}-parks-dev
+oc policy add-role-to-user edit system:serviceaccount:${GUID}-jenkins:jenkins -n ${GUID}-parks-dev
 
 echo "Trying Git clone for project sources"
 #git clone https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git
