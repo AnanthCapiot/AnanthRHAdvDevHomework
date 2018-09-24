@@ -39,6 +39,8 @@ chmod +x setup_jenkins_docker_init.sh
 # Sudo to Root to run docker commands
 sudo ./setup_jenkins_docker_init.sh ${GUID} ${USER} $(oc whoami -t)
 
+echo "Setting up Openshift Pipeline for MLBParks application"
+
 echo "apiVersion: v1
 items:
 - kind: "BuildConfig"
@@ -61,3 +63,5 @@ items:
         jenkinsfilePath: MLBParks/Jenkinsfile
 kind: List
 metadata: []" | oc create -f - -n ${GUID}-jenkins
+
+echo ">>>>>> Completed setup up Openshift Pipeline for MLBParks application <<<<<<"
