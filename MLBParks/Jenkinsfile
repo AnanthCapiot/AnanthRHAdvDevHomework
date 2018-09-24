@@ -84,7 +84,8 @@ podTemplate(
 		stage('Build and Tag OpenShift Image') {
 			echo "Building OpenShift container image mlbparks:${devTag}"  
 			sh "oc start-build mlbparks --follow --from-file=./target/mlbparks.war -n ${GUID}-parks-dev"  
-			openshiftTag alias: 'false', destStream: 'mlbparks', destTag: devTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: 'latest', verbose: 'false'
+			
+			openshiftTag alias: 'false', destStream: 'mlbparks', destTag: devTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: 'latest', verbose: 'false'			
 		}
 
 		// Deploy the built image to the Development Environment.
@@ -93,10 +94,6 @@ podTemplate(
 			// Update the Image on the Development Deployment Config
 			sh "oc set image dc/mlbparks mlbparks=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${devTag} -n ${GUID}-parks-dev"
 			
-			// Update the Config Map which contains the users for the Tasks application
-			// sh "oc delete configmap tasks-config -n user5-tasks-dev --ignore-not-found=true"
-			// sh "oc create configmap tasks-config --from-file=./configuration/application-users.properties --from-file=./configuration/application-roles.properties -n user5-tasks-dev"
-
 			// Deploy the development application.	
 			openshiftDeploy depCfg: 'mlbparks', namespace: '${GUID}-parks-dev', verbose: 'false', waitTime: '', waitUnit: 'sec'
 			openshiftVerifyDeployment depCfg: 'mlbparks', namespace: '${GUID}-parks-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
@@ -133,7 +130,7 @@ podTemplate(
 		  echo "Active Application:      " + activeApp
 		  echo "Destination Application: " + destApp
 
-		  echo "The prod version tag is: ${prodTag}..."
+		  echo "The destination app is: ${destApp} and prod version tag is: ${prodTag}..."
 		  
 		  // Update the Image on the Production Deployment Config
 		  sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
@@ -143,9 +140,10 @@ podTemplate(
 		  sh "oc env dc/${destApp} --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
 
 		  // Deploy the inactive application. 
-		  openshiftDeploy depCfg: destApp, namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
-		  openshiftVerifyDeployment depCfg: destApp, namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
-		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: destApp, verbose: 'true'
+		  openshiftDeploy depCfg: ${destApp}, namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
+		  openshiftVerifyDeployment depCfg: ${destApp}, namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
+		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: ${destApp}, verbose: 'true'
+		  
 		}
 	 }
   }  
