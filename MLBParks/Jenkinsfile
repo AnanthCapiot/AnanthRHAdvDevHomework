@@ -70,13 +70,13 @@ podTemplate(
 		// Using Maven call SonarQube for Code Analysis
 		stage('Code Analysis') {
 			echo "Running Code Analysis"
-			// sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.na39.openshift.opentlc.com -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"    
+			sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.na39.openshift.opentlc.com -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"    
 		}
 		
 		// Publish the built war file to Nexus
 		stage('Publish to Nexus') {
 			echo "Publish to Nexus"
-			// sh "${mvnCmd} deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://nexus3.${GUID}-nexus.svc.cluster.local:8081/repository/releases"   
+			sh "${mvnCmd} deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://nexus3.${GUID}-nexus.svc.cluster.local:8081/repository/releases"   
 			echo ">>>>>>>>>> Completed Publishing to Nexus <<<<<<<<<<"
 		}	  
 	  
@@ -133,10 +133,12 @@ podTemplate(
 		  echo "Active Application:      " + activeApp
 		  echo "Destination Application: " + destApp
 
+		  echo "The prod version tag is: ${prodTag}..."
+		  
 		  // Update the Image on the Production Deployment Config
 		  sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
 
-		  sh "oc delete configmap prod-application-mongodb-config-map -n ${GUID}-parks-prod --ignore-not-found=true"
+		  sh "oc delete configmap ${destApp}-config -n ${GUID}-parks-prod --ignore-not-found=true"
 		  sh "oc create configmap prod-application-mongodb-config-map --from-literal='prod-mongodb-connection.properties=Placeholder' -n ${GUID}-parks-prod"
 		  sh "oc env dc/${destApp} --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
 
