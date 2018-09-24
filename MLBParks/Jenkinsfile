@@ -140,8 +140,8 @@ podTemplate(
 		  sh "oc env dc/${destApp} --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
 
 		  // Deploy the inactive application. 
-		  openshiftDeploy depCfg: ${destApp}, namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
-		  openshiftVerifyDeployment depCfg: ${destApp}, namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
+		  openshiftDeploy depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
+		  openshiftVerifyDeployment depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
 		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: ${destApp}, verbose: 'true'
 		  
 		}
