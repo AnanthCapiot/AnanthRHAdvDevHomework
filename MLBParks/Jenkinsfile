@@ -58,7 +58,7 @@ podTemplate(
 		echo "Current directory is:"
 		sh "pwd"
 		echo "Building version ${version}"
-		sh "${mvnCmd} clean package -DskipTests"	
+		sh "${mvnCmd} -f MLBParks/pom.xml clean package -DskipTests"	
 	}
 	
 	// Using Maven run the unit tests
