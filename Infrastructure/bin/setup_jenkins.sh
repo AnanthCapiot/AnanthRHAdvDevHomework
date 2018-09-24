@@ -65,3 +65,28 @@ kind: List
 metadata: []" | oc create -f - -n ${GUID}-jenkins
 
 echo ">>>>>> Completed setup up Openshift Pipeline for MLBParks application <<<<<<"
+
+echo "apiVersion: v1
+items:
+- kind: "BuildConfig"
+  apiVersion: "v1"
+  metadata:
+    name: "nationalparks-pipeline"
+  spec:
+    source:
+      type: "Git"
+      git:
+        uri: "https://github.com/AnanthCapiot/eb90AdvDevHomework.git"
+    strategy:
+      type: "JenkinsPipeline"
+      jenkinsPipelineStrategy:
+        env:
+        - name: GUID
+          value: eb90
+        - name: CLUSTER
+          value: https://master.na39.openshift.opentlc.com
+        jenkinsfilePath: Nationalparks/Jenkinsfile
+kind: List
+metadata: []" | oc create -f - -n ${GUID}-jenkins
+
+echo ">>>>>> Completed setup up Openshift Pipeline for Nationalparks application <<<<<<"
