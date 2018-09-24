@@ -55,6 +55,8 @@ podTemplate(
 	// Do not run tests in this step
 	stage('Build war') {
 		sh "cd MLBParks"
+		echo "Current directory is:"
+		sh "pwd"
 		echo "Building version ${version}"
 		sh "${mvnCmd} clean package -DskipTests"	
 	}
