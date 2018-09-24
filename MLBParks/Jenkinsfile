@@ -137,7 +137,7 @@ podTemplate(
 
 		  sh "oc delete configmap prod-application-mongodb-config-map -n ${GUID}-parks-prod --ignore-not-found=true"
 		  sh "oc create configmap prod-application-mongodb-config-map --from-literal='prod-mongodb-connection.properties=Placeholder' -n ${GUID}-parks-prod"
-		  sh "oc env dc/${destApp} --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
+		  //sh "oc env dc/${destApp} --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
 
 		  // Deploy the inactive application. 
 		  openshiftDeploy depCfg: destApp, namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
