@@ -38,3 +38,26 @@ chmod +x setup_jenkins_docker_init.sh
 
 # Sudo to Root to run docker commands
 sudo ./setup_jenkins_docker_init.sh ${GUID} ${USER} $(oc whoami -t)
+
+echo "apiVersion: v1
+items:
+- kind: "BuildConfig"
+  apiVersion: "v1"
+  metadata:
+    name: "mlbparks-pipeline"
+  spec:
+    source:
+      type: "Git"
+      git:
+        uri: "https://github.com/AnanthCapiot/eb90AdvDevHomework.git"
+    strategy:
+      type: "JenkinsPipeline"
+      jenkinsPipelineStrategy:
+        env:
+        - name: GUID
+          value: ${GUID}
+        - name: CLUSTER
+          value: ${CLUSTER}
+        jenkinsfilePath: MLBParks/Jenkinsfile
+kind: List
+metadata: []" | oc create -f - -n ${GUID}-jenkins
