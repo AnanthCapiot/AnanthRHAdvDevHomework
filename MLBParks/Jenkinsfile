@@ -70,7 +70,7 @@ podTemplate(
 		// Using Maven call SonarQube for Code Analysis
 		stage('Code Analysis') {
 			echo "Running Code Analysis"
-			// sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.na39.openshift.opentlc.com -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"    
+			sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.na39.openshift.opentlc.com -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"    
 		}
 		
 		// Publish the built war file to Nexus
@@ -106,7 +106,7 @@ podTemplate(
 		// Run Integration Tests in the Development Environment.
 		stage('Integration Tests') {
 			echo "Running Integration Tests"    
-			sh "curl -i -u -X GET http://mlbparks.${GUID}-parks-dev.svc.cluster.local:8080//ws/healthz/"	 
+			sh "curl -i GET http://mlbparks-${GUID}-parks-dev.apps.na39.openshift.opentlc.com/ws/healthz"
 		}
 		  
 		// Copy Image to Nexus Docker Registry
