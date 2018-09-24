@@ -78,46 +78,46 @@ podTemplate(
 			echo "Publish to Nexus"
 			sh "${mvnCmd} deploy -DskipTests=true -DaltDeploymentRepository=nexus::default::http://nexus3.${GUID}-nexus.svc.cluster.local:8081/repository/releases"   
 			echo ">>>>>>>>>> Completed Publishing to Nexus <<<<<<<<<<"
+		}	  
+	  
+		// Build the OpenShift Image in OpenShift and tag it.
+		stage('Build and Tag OpenShift Image') {
+			echo "Building OpenShift container image mlbparks:${devTag}"  
+			sh "oc start-build mlbparks --follow --from-file=.MLBParks/target/mlbparks.war -n ${GUID}-parks-dev"  
+			openshiftTag alias: 'false', destStream: 'mlbparks', destTag: devTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: 'latest', verbose: 'false'
 		}
-	  }
-	  
-	  // Build the OpenShift Image in OpenShift and tag it.
-	  stage('Build and Tag OpenShift Image') {
-		echo "Building OpenShift container image mlbparks:${devTag}"  
-		sh "oc start-build mlbparks --follow --from-file=.MLBParks/target/mlbparks.war -n ${GUID}-parks-dev"  
-		openshiftTag alias: 'false', destStream: 'mlbparks', destTag: devTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: 'latest', verbose: 'false'
-	  }
 
-	  // Deploy the built image to the Development Environment.
-	  stage('Deploy MLBParks to Dev') {
-		echo "Deploying MLBParks container image to Development Project"    
-		// Update the Image on the Development Deployment Config
-		sh "oc set image dc/mlbparks mlbparks=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${devTag} -n ${GUID}-parks-dev"
+		// Deploy the built image to the Development Environment.
+		stage('Deploy MLBParks to Dev') {
+			echo "Deploying MLBParks container image to Development Project"    
+			// Update the Image on the Development Deployment Config
+			sh "oc set image dc/mlbparks mlbparks=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${devTag} -n ${GUID}-parks-dev"
+			
+			// Update the Config Map which contains the users for the Tasks application
+			// sh "oc delete configmap tasks-config -n user5-tasks-dev --ignore-not-found=true"
+			// sh "oc create configmap tasks-config --from-file=./configuration/application-users.properties --from-file=./configuration/application-roles.properties -n user5-tasks-dev"
+
+			// Deploy the development application.	
+			openshiftDeploy depCfg: 'mlbparks', namespace: '${GUID}-parks-dev', verbose: 'false', waitTime: '', waitUnit: 'sec'
+			openshiftVerifyDeployment depCfg: 'mlbparks', namespace: '${GUID}-parks-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
+			openshiftVerifyService namespace: '${GUID}-parks-dev', svcName: 'mlbparks', verbose: 'false'
+		}  
 		
-		// Update the Config Map which contains the users for the Tasks application
-		// sh "oc delete configmap tasks-config -n user5-tasks-dev --ignore-not-found=true"
-		// sh "oc create configmap tasks-config --from-file=./configuration/application-users.properties --from-file=./configuration/application-roles.properties -n user5-tasks-dev"
+		// Run Integration Tests in the Development Environment.
+		stage('Integration Tests') {
+			echo "Running Integration Tests"    
+			sh "curl -i -u -X GET http://mlbparks.${GUID}-parks-dev.svc.cluster.local:8080//ws/healthz/"	 
+		}
+		  
+		// Copy Image to Nexus Docker Registry
+		stage('Copy Image to Nexus Docker Registry') {
+			echo "Copy image to Nexus Docker Registry"    
+			sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:admin123 docker://docker-registry.default.svc.cluster.local:5000/${GUID}-parks-dev/mlbparks:${devTag} docker://nexus-registry.${GUID}-nexus.svc.cluster.local:5000/mlbparks:${devTag}"
 
-		// Deploy the development application.	
-		openshiftDeploy depCfg: 'mlbparks', namespace: '${GUID}-parks-dev', verbose: 'false', waitTime: '', waitUnit: 'sec'
-		openshiftVerifyDeployment depCfg: 'mlbparks', namespace: '${GUID}-parks-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
-		openshiftVerifyService namespace: '${GUID}-parks-dev', svcName: 'mlbparks', verbose: 'false'
-	  }  
-	  
-	  // Run Integration Tests in the Development Environment.
-	  stage('Integration Tests') {
-		echo "Running Integration Tests"    
-		sh "curl -i -u -X GET http://mlbparks.${GUID}-parks-dev.svc.cluster.local:8080//ws/healthz/"	 
-	  }
-	  
-	  // Copy Image to Nexus Docker Registry
-	  stage('Copy Image to Nexus Docker Registry') {
-		echo "Copy image to Nexus Docker Registry"    
-		sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:admin123 docker://docker-registry.default.svc.cluster.local:5000/${GUID}-parks-dev/mlbparks:${devTag} docker://nexus-registry.${GUID}-nexus.svc.cluster.local:5000/mlbparks:${devTag}"
-
-		// Tag the built image with the production tag.	
-		openshiftTag alias: 'false', destStream: 'tasks', destTag: prodTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: devTag, verbose: 'false'	
-	  }
+			// Tag the built image with the production tag.	
+			openshiftTag alias: 'false', destStream: 'tasks', destTag: prodTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: devTag, verbose: 'false'	
+		}
+	 }
   }  
 }
 
