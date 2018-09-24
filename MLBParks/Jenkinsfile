@@ -109,8 +109,7 @@ podTemplate(
 	// Tag the built image with the production tag.	
 	openshiftTag alias: 'false', destStream: 'tasks', destTag: prodTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: devTag, verbose: 'false'	
   }
- 
-  }
+  
 }
 
 // Convenience Functions to read variables from the pom.xml
