@@ -156,6 +156,7 @@ podTemplate(
         	//input "Switch Production?"
         	echo "Switching Production application to ${destApp}."        
 		sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"' + destApp + '"}}}\''
+		echo "Switched Production application to ${destApp}.  To rollback, use reset_prod.sh"
       	    }	
 	 }
      }  
