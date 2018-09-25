@@ -5,7 +5,7 @@ SESSION_TOKEN=$3
 # Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM
 echo "Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM"
 cp /etc/containers/registries.conf /etc/containers/registries.conf.$(date +%Y%m%d%H%M)
-cd /home/$2/$1AdvDevHomework/Infrastructure/bin
+cd /home/$2/AnanthRHAdvDevHomework/Infrastructure/bin
 command cp -fr registries.conf /etc/containers/
 
 echo "Enabling Docker and Starting Docker service"
