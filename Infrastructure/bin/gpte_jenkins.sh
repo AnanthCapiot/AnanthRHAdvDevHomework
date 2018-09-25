@@ -11,7 +11,9 @@ USER=$2
 echo "Creating all Homework Projects for GUID=${GUID} and USER=${USER}"
 oc login https://master.na39.openshift.opentlc.com -u ${USER} -p securityPolicy@1234
 
-oc new-project gpte-jenkins2        --display-name="Homework Grading Jenkins"
+oc new-project gpte-jenkins2 --display-name="Homework Grading Jenkins"
+
+oc project gpte-jenkins2
 
 oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=4Gi -n gpte-jenkins2
 oc set resources dc/jenkins --limits=cpu=1 --requests=memory=2Gi,cpu=1 -n gpte-jenkins2
