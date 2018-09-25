@@ -29,7 +29,7 @@ echo "Building Mongo DB Project"
 cd $HOME/AnanthRHAdvDevHomework/Infrastructure/templates
 oc create -f dev-mongodb-configmaps.yml && \
 
-oc new-app --name=mongodb -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=parks -e MONGODB_ADMIN_PASSWORD=mongodb registry.access.redhat.com/rhscl/mongodb-34-rhel7:latest && \
+oc new-app --name=mongodb -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=parks -e MONGODB_ADMIN_PASSWORD=mongodb registry.access.redhat.com/rhscl/mongodb-26-rhel7 && \
 
 oc rollout pause dc/mongodb && \
 
