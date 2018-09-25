@@ -90,3 +90,28 @@ kind: List
 metadata: []" | oc create -f - -n ${GUID}-jenkins
 
 echo ">>>>>> Completed setup up Openshift Pipeline for Nationalparks application <<<<<<"
+
+echo "apiVersion: v1
+items:
+- kind: "BuildConfig"
+  apiVersion: "v1"
+  metadata:
+    name: "parksmap-pipeline"
+  spec:
+    source:
+      type: "Git"
+      git:
+        uri: "https://github.com/AnanthCapiot/eb90AdvDevHomework.git"
+    strategy:
+      type: "JenkinsPipeline"
+      jenkinsPipelineStrategy:
+        env:
+        - name: GUID
+          value: ${GUID}
+        - name: CLUSTER
+          value: ${CLUSTER}
+        jenkinsfilePath: ParksMap/Jenkinsfile
+kind: List
+metadata: []" | oc create -f - -n ${GUID}-jenkins
+
+echo ">>>>>> Completed setup up Openshift Pipeline for ParksMap application <<<<<<"
