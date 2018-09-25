@@ -53,7 +53,7 @@ items:
     source:
       type: "Git"
       git:
-        uri: "https://github.com/AnanthCapiot/eb90AdvDevHomework.git"
+        uri: ${REPO}
     strategy:
       type: "JenkinsPipeline"
       jenkinsPipelineStrategy:
@@ -78,7 +78,7 @@ items:
     source:
       type: "Git"
       git:
-        uri: "https://github.com/AnanthCapiot/eb90AdvDevHomework.git"
+        uri: ${REPO}
     strategy:
       type: "JenkinsPipeline"
       jenkinsPipelineStrategy:
@@ -103,7 +103,7 @@ items:
     source:
       type: "Git"
       git:
-        uri: "https://github.com/AnanthCapiot/eb90AdvDevHomework.git"
+        uri: ${REPO}
     strategy:
       type: "JenkinsPipeline"
       jenkinsPipelineStrategy:
