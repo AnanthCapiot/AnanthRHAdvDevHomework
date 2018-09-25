@@ -11,7 +11,7 @@ USER=$2
 
 echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
-git clone https://github.com/AnanthCapiot/eb90AdvDevHomework.git
+git pull https://github.com/AnanthCapiot/AnanthRHAdvDevHomework.git
 #git reset --hard HEAD && git pull origin master
 sudo chmod +x *.sh
 
