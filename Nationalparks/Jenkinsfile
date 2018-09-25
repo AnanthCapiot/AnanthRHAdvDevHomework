@@ -29,7 +29,7 @@ podTemplate(
 	
 	// Checkout Source Code
 	stage('Checkout Source') {
-		git url:"https://github.com/AnanthCapiot/${GUID}AdvDevHomework.git"
+		git url:"https://github.com/AnanthCapiot/AnanthRHAdvDevHomework.git"
 	}
 	
 	dir('Nationalparks') {
