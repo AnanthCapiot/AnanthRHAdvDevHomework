@@ -11,7 +11,7 @@ USER=$2
 echo "Creating all Homework Projects for GUID=${GUID} and USER=${USER}"
 oc login https://master.na39.openshift.opentlc.com -u ${USER} -p securityPolicy@1234
 
-oc new-project gpte-jenkins2 --display-name="Homework Grading Jenkins"
+oc new-project gpte-jenkins2 --display-name="My Homework Grading Jenkins"
 
 oc project gpte-jenkins2
 
