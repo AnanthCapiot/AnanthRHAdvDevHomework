@@ -124,7 +124,7 @@ podTemplate(
 		stage('Blue/Green Production Deployment') {
 			
 		  activeApp = sh(returnStdout: true, script: "oc get route mlbparks -n ${GUID}-parks-prod -o jsonpath='{ .spec.to.name }'").trim()
-		  echo "Current active application is " ${activeApp}
+		  echo "Current active application is:${activeApp}"
 		  	
 		  if (activeApp == "mlbparks-green") {
 			destApp = "mlbparks-blue"
