@@ -82,9 +82,9 @@ items:
       jenkinsPipelineStrategy:
         env:
         - name: GUID
-          value: eb90
+          value: ${GUID}
         - name: CLUSTER
-          value: https://master.na39.openshift.opentlc.com
+          value: ${CLUSTER}
         jenkinsfilePath: Nationalparks/Jenkinsfile
 kind: List
 metadata: []" | oc create -f - -n ${GUID}-jenkins
