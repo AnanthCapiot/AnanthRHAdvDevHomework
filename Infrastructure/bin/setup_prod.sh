@@ -23,7 +23,7 @@ oc policy add-role-to-group edit system:image-puller system:service-accounts:${G
 
 git reset --hard HEAD && git pull origin master
 
-cd $HOME/eb90AdvDevHomework/Infrastructure/templates
+cd $HOME/AnanthRHAdvDevHomework/Infrastructure/templates
 
 echo "Creating Headless Service"
 oc create -f prod-mongodb-headless-service.yml && \
