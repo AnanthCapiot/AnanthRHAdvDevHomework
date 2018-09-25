@@ -122,10 +122,14 @@ podTemplate(
 		def activeApp = ""
 
 		stage('Blue/Green Production Deployment') {
-
+			
 		  activeApp = sh(returnStdout: true, script: "oc get route mlbparks -n ${GUID}-parks-prod -o jsonpath='{ .spec.to.name }'").trim()
+		  echo "Current active application is " ${activeApp}
+		  	
 		  if (activeApp == "mlbparks-green") {
 			destApp = "mlbparks-blue"
+			echo "Current running application is: mlbparks-green.  New application will be: mlbparks-blue"
+			echo "To revert, use reset_prod.sh"  
 		  }
 		  echo "Active Application:      " + activeApp
 		  echo "Destination Application: " + destApp
@@ -151,7 +155,7 @@ podTemplate(
 	     stage('Switch over to new Version') {
         	//input "Switch Production?"
         	echo "Switching Production application to ${destApp}."        
-		     sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"' + destApp + '"}}}\''
+		sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"' + destApp + '"}}}\''
       	    }	
 	 }
      }  
