@@ -49,7 +49,7 @@ podTemplate(
 
 		// Using Maven build the war file
 		// Do not run tests in this step
-		stage('Build war') {
+		stage('Build Jar') {
 			echo "Current directory is:"
 			sh "pwd"
 			echo "Building version ${version}"
@@ -78,7 +78,7 @@ podTemplate(
 		// Build the OpenShift Image in OpenShift and tag it.
 		stage('Build and Tag OpenShift Image') {
 			echo "Building OpenShift container image parksmap:${devTag}"  
-			sh "oc start-build parksmap --follow --from-file=./target/parksmap.war -n ${GUID}-parks-dev"  
+			sh "oc start-build parksmap --follow --from-file=./target/parksmap.jar -n ${GUID}-parks-dev"  
 			
 			openshiftTag alias: 'false', destStream: 'parksmap', destTag: devTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'parksmap', srcTag: 'latest', verbose: 'false'			
 		}
