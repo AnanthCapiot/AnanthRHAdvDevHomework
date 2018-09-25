@@ -1,13 +1,13 @@
 #!/bin/bash
 # Setup Nexus Project
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 1 ]; then
     echo "Usage:"
-    echo "  $0 GUID USER"
+    echo "  $0 GUID"
     exit 1
 fi
 
 GUID=$1
-USER=$2
+
 echo "Setting up Nexus in project $GUID-nexus"
 
 # Code to set up the Nexus. It will need to
