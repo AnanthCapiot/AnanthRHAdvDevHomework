@@ -16,7 +16,7 @@ oc new-project gpte-jenkins2 --display-name="My Homework Grading Jenkins"
 oc project gpte-jenkins2
 
 oc new-app jenkins-persistent --param ENABLE_OAUTH=true --param MEMORY_LIMIT=2Gi --param VOLUME_CAPACITY=4Gi -n gpte-jenkins2
-oc set resources dc/jenkins --limits=cpu=1 --requests=memory=2Gi,cpu=1 -n gpte-jenkins2
+oc set resources dc/jenkins --limits=cpu=2,memory=4Gi --requests=memory=2Gi,cpu=1 -n gpte-jenkins2
 
 oc create clusterrole namespace-patcher --verb=patch --resource=namespaces
 oc adm policy add-cluster-role-to-user namespace-patcher system:serviceaccount:gpte-jenkins2:jenkins
