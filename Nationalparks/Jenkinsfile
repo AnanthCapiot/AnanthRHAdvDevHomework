@@ -49,7 +49,7 @@ podTemplate(
 
 		// Using Maven build the war file
 		// Do not run tests in this step
-		stage('Build war') {
+		stage('Build Jar') {
 			echo "Current directory is:"
 			sh "pwd"
 			echo "Building version ${version}"
