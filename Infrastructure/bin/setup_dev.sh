@@ -27,7 +27,7 @@ echo "Trying Git clone for project sources"
 # To be Implemented by Student
 echo "Building Mongo DB Project"
 
-cd $HOME/eb90AdvDevHomework/Infrastructure/templates
+cd $HOME/AnanthRHAdvDevHomework/Infrastructure/templates
 oc create -f dev-mongodb-configmaps.yml && \
 
 oc new-app --name=mongodb -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=parks -e MONGODB_ADMIN_PASSWORD=mongodb registry.access.redhat.com/rhscl/mongodb-34-rhel7:latest && \
@@ -44,7 +44,7 @@ oc rollout resume dc/mongodb && \
 
 echo "Setting up MLBParks Application"
 # Building MLBParks application
-cd $HOME/${GUID}AdvDevHomework/MLBParks/
+cd $HOME/AnanthRHAdvDevHomework/MLBParks/
 
 # Set up Dev Application
 oc new-build --binary=true --name="mlbparks" jboss-eap70-openshift:1.7 -n ${GUID}-parks-dev && \
@@ -64,7 +64,7 @@ oc expose svc mlbparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
 echo ">>>>>>>> Completed exposing MLB Parks application/service successfully <<<<<<<<<"
 
 echo "Begin building of National Parks application..."
-cd $HOME/${GUID}AdvDevHomework/Nationalparks/
+cd $HOME/AnanthRHAdvDevHomework/Nationalparks/
 
 oc new-build --binary=true --name=nationalparks --image-stream=redhat-openjdk18-openshift:1.2 && \
 
@@ -81,7 +81,7 @@ oc expose svc nationalparks -n ${GUID}-parks-dev -l type=parksmap-backend && \
 echo ">>>>>>>> Completed exposing NationalParks application/service successfully <<<<<<<<<"
 
 echo "Begin building of Parks Map application..."
-cd $HOME/${GUID}AdvDevHomework/ParksMap
+cd $HOME/AnanthRHAdvDevHomework/ParksMap
 
 oc new-build --binary=true --name=parksmap --image-stream=redhat-openjdk18-openshift:1.2 && \
 
