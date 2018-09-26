@@ -44,7 +44,7 @@ chmod +x setup_jenkins_docker_init.sh
 echo "Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM"
 sudo cp /etc/containers/registries.conf /etc/containers/registries.conf.$(date +%Y%m%d%H%M)
 sudo cd /home/${USER}/AnanthRHAdvDevHomework/Infrastructure/bin
-sudo command cp -fr registries.conf /etc/containers/
+sudo command cp -fr /home/${USER}/AnanthRHAdvDevHomework/Infrastructure/bin/registries.conf /etc/containers
 
 sudo systemctl enable docker
 sudo systemctl start docker
