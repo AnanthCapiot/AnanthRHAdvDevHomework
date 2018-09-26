@@ -101,10 +101,10 @@ podTemplate(
         sh "oc env dc/mlbparks --from=configmap/mlbparks-config -n ${GUID}-parks-dev"
 
         // Deploy the development application.
-        // Replace 70fa-parks-dev with the name of your production project
-        openshiftDeploy depCfg: 'mlbparks', namespace: '70fa-parks-dev', verbose: 'false', waitTime: '', waitUnit: 'sec'
-        openshiftVerifyDeployment depCfg: 'mlbparks', namespace: '70fa-parks-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
-        openshiftVerifyService namespace: '70fa-parks-dev', svcName: 'mlbparks', verbose: 'false'
+        // Replace ${GUID}-parks-dev with the name of your production project
+        openshiftDeploy depCfg: 'mlbparks', namespace: '${GUID}-parks-dev', verbose: 'false', waitTime: '', waitUnit: 'sec'
+        openshiftVerifyDeployment depCfg: 'mlbparks', namespace: '${GUID}-parks-dev', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'false', waitTime: '', waitUnit: 'sec'
+        openshiftVerifyService namespace: '${GUID}-parks-dev', svcName: 'mlbparks', verbose: 'false'
       }
 
       
@@ -113,18 +113,18 @@ podTemplate(
         echo "Running Integration Tests"
         
         echo "Health check MLBParks"
-        sh "curl -i  http://mlbparks-70fa-parks-dev.apps.na39.openshift.opentlc.com/ws/healthz/"
+        sh "curl -i  http://mlbparks-${GUID}-parks-dev.apps.na39.openshift.opentlc.com/ws/healthz/"
       }
 
       // Copy Image to Nexus Docker Registry
       stage('Copy Image to Nexus Docker Registry') {
         echo "Copy image to Nexus Docker Registry"
         
-        sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:admin123  docker://docker-registry.default.svc.cluster.local:5000/70fa-parks-dev/mlbparks:${devTag} docker://nexus-registry.70fa-nexus.svc.cluster.local:5000/mlbparks:${devTag}"
+        sh "skopeo copy --src-tls-verify=false --dest-tls-verify=false --src-creds openshift:\$(oc whoami -t) --dest-creds admin:admin123  docker://docker-registry.default.svc.cluster.local:5000/${GUID}-parks-dev/mlbparks:${devTag} docker://nexus-registry.${GUID}-nexus.svc.cluster.local:5000/mlbparks:${devTag}"
 
         // Tag the built image with the production tag.
-        // Replace 70fa-parks-dev with the name of your dev project
-        openshiftTag alias: 'false', destStream: 'mlbparks', destTag: prodTag, destinationNamespace: '70fa-parks-dev', namespace: '70fa-parks-dev', srcStream: 'mlbparks', srcTag: devTag, verbose: 'false'
+        // Replace ${GUID}-parks-dev with the name of your dev project
+        openshiftTag alias: 'false', destStream: 'mlbparks', destTag: prodTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: devTag, verbose: 'false'
       }
 
       // Blue/Green Deployment into Production
@@ -135,7 +135,7 @@ podTemplate(
 
       stage('Blue/Green Production Deployment') {
         
-        activeApp = sh(returnStdout: true, script: "oc get route mlbparks -n 70fa-parks-prod -o jsonpath='{ .spec.to.name }'").trim()
+        activeApp = sh(returnStdout: true, script: "oc get route mlbparks -n ${GUID}-parks-prod -o jsonpath='{ .spec.to.name }'").trim()
         if (activeApp == "mlbparks-green") {
           destApp = "mlbparks-blue"
         }
@@ -143,18 +143,18 @@ podTemplate(
         echo "Destination Application: " + destApp
 
         // Update the Image on the Production Deployment Config
-        sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/70fa-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
+        sh "oc set image dc/${destApp} ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
 
         // Update the Config Map which contains the users for the Tasks application
-        sh "oc delete configmap ${destApp}-config -n 70fa-parks-prod --ignore-not-found=true"
+        sh "oc delete configmap ${destApp}-config -n ${GUID}-parks-prod --ignore-not-found=true"
         sh "oc create configmap ${destApp}-config --from-literal=DB_HOST=mongodb --from-literal=DB_PORT=27017 --from-literal=DB_USERNAME=mongodb --from-literal=DB_PASSWORD=mongodb --from-literal=DB_NAME=parks -n ${GUID}-parks-prod"
         sh "oc env dc/${destApp} --from=configmap/${destApp}-config -n ${GUID}-parks-prod"
         
         // Deploy the inactive application.
-        // Replace 70fa-parks-prod with the name of your production project
-        openshiftDeploy depCfg: destApp, namespace: '70fa-parks-prod', verbose: 'false', waitTime: '', waitUnit: 'sec'
-        openshiftVerifyDeployment depCfg: destApp, namespace: '70fa-parks-prod', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
-        openshiftVerifyService namespace: '70fa-parks-prod', svcName: destApp, verbose: 'false'
+        // Replace ${GUID}-parks-prod with the name of your production project
+        openshiftDeploy depCfg: destApp, namespace: '${GUID}-parks-prod', verbose: 'false', waitTime: '', waitUnit: 'sec'
+        openshiftVerifyDeployment depCfg: destApp, namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
+        openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: destApp, verbose: 'false'
       }
       
 
@@ -163,7 +163,7 @@ podTemplate(
 
         echo "Switching Production application to ${destApp}."
         
-        sh 'oc patch route mlbparks -n 70fa-parks-prod -p \'{"spec":{"to":{"name":"' + destApp + '"}}}\''
+        sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"' + destApp + '"}}}\''
       }
     }
  
