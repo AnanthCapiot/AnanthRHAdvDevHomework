@@ -26,15 +26,13 @@ podTemplate(
 	// bypass the router). The file nexus_openshift_settings.xml
 	// needs to be in the Source Code repository.
 	def mvnCmd = "mvn -s ../nexus_settings.xml"
-	/**
+	
 	// Checkout Source Code
 	stage('Checkout Source') {
 		git url:"https://github.com/AnanthCapiot/AnanthRHAdvDevHomework.git"
 	}
-	**/
-	
-	dir('MLBParks') {
 		
+	dir('MLBParks') {		
 		// The following variables need to be defined at the top level
 		// and not inside the scope of a stage - otherwise they would not
 		// be accessible from other stages.
