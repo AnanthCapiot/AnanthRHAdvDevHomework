@@ -147,7 +147,7 @@ podTemplate(
 		  //sh "oc patch route mlbparks -n ${GUID}-parks-prod -p '{\"spec\":{\"to\":{\"name\":\"mlbparks\"}}}'"
 			
 		  // Deploy the inactive application. 
-		  openshiftDeploy depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '300', waitUnit: 'sec'
+		  openshiftDeploy depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
 		  
 		  openshiftVerifyDeployment depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
 		  
