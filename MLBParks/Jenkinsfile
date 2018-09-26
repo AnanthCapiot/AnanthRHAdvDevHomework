@@ -136,15 +136,15 @@ podTemplate(
 
 		  echo "The destination app is: ${destApp} and prod version tag is: ${prodTag}..."
 		  
-		  // Update the Image on the Production Deployment Config
-		  sh "oc set image dc/mlbparks-green  mlbparks-green=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
-
 		  sh "oc delete configmap prod-application-mongodb-config-map -n ${GUID}-parks-prod --ignore-not-found=true"
 		  sh "oc create configmap prod-application-mongodb-config-map --from-literal='prod-mongodb-connection.properties=Placeholder' -n ${GUID}-parks-prod"
 		  sh "oc env dc/mlbparks-green --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
-			
+
+		  // Update the Image on the Production Deployment Config
+		  sh "oc set image dc/mlbparks-green  mlbparks-green=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
+
 		  // Patch - in case if you run multiple times!!	
-		  sh "oc patch route mlbparks -n ${GUID}-parks-prod -p '{\"spec\":{\"to\":{\"name\":\"mlbparks\"}}}'"
+		  //sh "oc patch route mlbparks -n ${GUID}-parks-prod -p '{\"spec\":{\"to\":{\"name\":\"mlbparks\"}}}'"
 			
 		  // Deploy the inactive application. 
 		  openshiftDeploy depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '300', waitUnit: 'sec'
