@@ -34,7 +34,7 @@ podTemplate(
 	**/
 	
 	dir('MLBParks') {
-		/**
+		
 		// The following variables need to be defined at the top level
 		// and not inside the scope of a stage - otherwise they would not
 		// be accessible from other stages.
@@ -53,7 +53,7 @@ podTemplate(
 	  
 		// Set the tag for the production image: version
 		def prodTag = "${version}"
-
+		/**
 		// Using Maven build the war file
 		// Do not run tests in this step
 		stage('Build war') {
