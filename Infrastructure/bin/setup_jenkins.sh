@@ -38,7 +38,29 @@ oc set probe dc jenkins --readiness --initial-delay-seconds=500
 chmod +x setup_jenkins_docker_init.sh
 
 # Sudo to Root to run docker commands
-sudo ./setup_jenkins_docker_init.sh ${GUID} ${USER} $(oc whoami -t)
+#sudo ./setup_jenkins_docker_init.sh ${GUID} ${USER} $(oc whoami -t)
+
+# Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM
+echo "Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM"
+sudo cp /etc/containers/registries.conf /etc/containers/registries.conf.$(date +%Y%m%d%H%M)
+sudo cd /home/$2/AnanthRHAdvDevHomework/Infrastructure/bin
+sudo command cp -fr registries.conf /etc/containers/
+
+sudo systemctl enable docker
+sudo systemctl start docker
+
+mkdir -p $HOME/jenkins-slave-appdev
+cd  $HOME/jenkins-slave-appdev
+
+echo "FROM docker.io/openshift/jenkins-slave-maven-centos7:v3.9
+USER root
+RUN yum -y install skopeo apb && \
+    yum clean all
+USER 1001" > Dockerfile
+
+sudo docker build . -t docker-registry-default.apps.na39.example.opentlc.com/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
+
+skopeo copy --dest-tls-verify=false --dest-creds=$(oc whoami):$(oc whoami -t) docker-daemon:docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9	
 
 echo "Setting up Openshift Pipeline for MLBParks application"
 
