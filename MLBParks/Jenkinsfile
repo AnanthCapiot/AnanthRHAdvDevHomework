@@ -156,7 +156,9 @@ podTemplate(
 		
 	     stage('Switch over to new Version') {
         	//input "Switch Production?"
-        	echo "Switching Production application to mlbparks-blue."        
+        	echo "Switching Production application to mlbparks-blue."  
+		echo "Existing deployment is: " 
+		sh "oc get route mlbparks -n ${GUID}-parks-prod -o jsonpath='{ .spec.to.name }'"     
 		sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"mlbparks-blue"}}}\''
 		echo "Switched Production application to mlbparks-blue.  To rollback, use reset_prod.sh"
       	    }	
