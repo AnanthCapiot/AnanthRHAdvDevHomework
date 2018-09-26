@@ -138,7 +138,7 @@ podTemplate(
 		  
 		  sh "oc delete configmap prod-application-mongodb-config-map -n ${GUID}-parks-prod --ignore-not-found=true"
 		  sh "oc create configmap prod-application-mongodb-config-map --from-literal='prod-mongodb-connection.properties=Placeholder' -n ${GUID}-parks-prod"
-		  sh "oc env dc/mlbparks-green --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
+		  // sh "oc env dc/mlbparks-green --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
 
 		  // Update the Image on the Production Deployment Config
 		  sh "oc set image dc/mlbparks-green  mlbparks-green=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
@@ -151,8 +151,7 @@ podTemplate(
 		  
 		  openshiftVerifyDeployment depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
 		  
-		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: destApp, verbose: 'true'
-		  
+		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: destApp, verbose: 'true'		  
 	     }
 		
 	     stage('Switch over to new Version') {
