@@ -28,9 +28,7 @@ podTemplate(
 
     // Checkout Source Code
     stage('Checkout Source') {
-      // TBD
-
-      git url: 'https://github.com/vivek-capiot/openshift_advdev_homework.git'
+      git url: 'https://github.com/AnanthCapiot/AnanthRHAdvDevHomework.git'
     }
     
     
