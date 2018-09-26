@@ -144,7 +144,7 @@ podTemplate(
 		  sh "oc env dc/mlbparks-green --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
 			
 		  // Patch - in case if you run multiple times!!	
-		  oc patch route mlbparks -n ${GUID}-parks-prod -p '{"spec":{"to":{"name":"mlbparks"}}}'
+		  sh "oc patch route mlbparks -n ${GUID}-parks-prod -p '{\"spec\":{\"to\":{\"name\":\"mlbparks\"}}}'"
 			
 		  // Deploy the inactive application. 
 		  openshiftDeploy depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '300', waitUnit: 'sec'
