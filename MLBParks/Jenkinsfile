@@ -31,8 +31,10 @@ podTemplate(
 	stage('Checkout Source') {
 		git url:"https://github.com/AnanthCapiot/AnanthRHAdvDevHomework.git"
 	}
+	**/
 	
 	dir('MLBParks') {
+		/**
 		// The following variables need to be defined at the top level
 		// and not inside the scope of a stage - otherwise they would not
 		// be accessible from other stages.
