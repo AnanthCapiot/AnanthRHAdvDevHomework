@@ -12,9 +12,9 @@ echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 oc project ${GUID}-parks-dev
 # Code to set up the parks development project.
 
-oc policy add-role-to-user edit system:serviceaccount:70fa-jenkins:jenkins -n 70fa-parks-dev
+oc policy add-role-to-user edit system:serviceaccount:${GUID}-jenkins:jenkins -n ${GUID}-parks-dev
 
-oc new-app --name=mongodb -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=parks -e MONGODB_ADMIN_PASSWORD=mongodb_admin_password     registry.access.redhat.com/rhscl/mongodb-26-rhel7
+oc new-app --name=mongodb -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=parks -e MONGODB_ADMIN_PASSWORD=mongodb_admin_password registry.access.redhat.com/rhscl/mongodb-26-rhel7
 oc rollout pause dc/mongodb 
 echo "apiVersion: "v1"
 kind: "PersistentVolumeClaim"
@@ -35,9 +35,9 @@ oc new-build --binary=true --strategy=source --name=mlbparks jboss-eap70-openshi
 oc new-build --binary=true --strategy=source --name=nationalparks redhat-openjdk18-openshift:1.2
 oc new-build --binary=true --strategy=source --name=parksmap redhat-openjdk18-openshift:1.2
 
-oc new-app 70fa-parks-dev/mlbparks:0.0-0 -e APPNAME="MLB Parks (Dev)" --name=mlbparks --allow-missing-imagestream-tags=true 
-oc new-app 70fa-parks-dev/nationalparks:0.0-0 -e APPNAME="National Parks (Dev)" --name=nationalparks --allow-missing-imagestream-tags=true 
-oc new-app 70fa-parks-dev/parksmap:0.0-0 -e APPNAME="ParksMap (Dev)" --name=parksmap --allow-missing-imagestream-tags=true 
+oc new-app ${GUID}-parks-dev/mlbparks:0.0-0 -e APPNAME="MLB Parks (Dev)" --name=mlbparks --allow-missing-imagestream-tags=true 
+oc new-app ${GUID}-parks-dev/nationalparks:0.0-0 -e APPNAME="National Parks (Dev)" --name=nationalparks --allow-missing-imagestream-tags=true 
+oc new-app ${GUID}-parks-dev/parksmap:0.0-0 -e APPNAME="ParksMap (Dev)" --name=parksmap --allow-missing-imagestream-tags=true 
 
 oc set triggers dc/mlbparks --remove-all
 oc set triggers dc/nationalparks --remove-all
