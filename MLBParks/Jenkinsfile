@@ -26,7 +26,7 @@ podTemplate(
 	// bypass the router). The file nexus_openshift_settings.xml
 	// needs to be in the Source Code repository.
 	def mvnCmd = "mvn -s ../nexus_settings.xml"
-	
+	/**
 	// Checkout Source Code
 	stage('Checkout Source') {
 		git url:"https://github.com/AnanthCapiot/AnanthRHAdvDevHomework.git"
@@ -114,7 +114,7 @@ podTemplate(
 			// Tag the built image with the production tag.	
 			openshiftTag alias: 'false', destStream: 'mlbparks', destTag: prodTag, destinationNamespace: '${GUID}-parks-dev', namespace: '${GUID}-parks-dev', srcStream: 'mlbparks', srcTag: devTag, verbose: 'false'	
 		}
-		
+		**/
 		// Blue/Green Deployment into Production
 		// -------------------------------------
 		// Do not activate the new version yet.
