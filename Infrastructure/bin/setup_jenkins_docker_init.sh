@@ -2,6 +2,8 @@ GUID=$1
 USER=$2
 SESSION_TOKEN=$3
 
+echo "Jenkins docker script... using ${GUID}, ${USER} and token: ${SESSION_TOKEN}"
+
 # Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM
 echo "Backup existing registries.conf to /etc/containers/registries.conf.yyyyMMddHHMM"
 cp /etc/containers/registries.conf /etc/containers/registries.conf.$(date +%Y%m%d%H%M)
