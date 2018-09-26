@@ -70,7 +70,7 @@ podTemplate(
 		// Using Maven call SonarQube for Code Analysis
 		stage('Code Analysis') {
 			echo "Running Code Analysis"
-			sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.na39.openshift.opentlc.com -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"    
+			sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube-${GUID}-sonarqube.apps.${CLUSTER} -Dsonar.projectName=${JOB_BASE_NAME}-${devTag}"    
 		}
 		
 		// Publish the built war file to Nexus
@@ -144,11 +144,11 @@ podTemplate(
 		  sh "oc env dc/${destApp} --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
 
 		  // Deploy the inactive application. 
-		  openshiftDeploy depCfg: destApp, namespace: '${GUID}-parks-prod', verbose: 'false', waitTime: '', waitUnit: 'sec'
+		  openshiftDeploy depCfg: destApp, namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
 		  
-		  openshiftVerifyDeployment depCfg: destApp, namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'false', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
+		  openshiftVerifyDeployment depCfg: destApp, namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
 		  
-		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: destApp, verbose: 'false'
+		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: destApp, verbose: 'true'
 		  
 	     }
 		
