@@ -51,7 +51,7 @@ sudo systemctl start docker
 
 mkdir -p $HOME/jenkins-slave-appdev
 cd  $HOME/jenkins-slave-appdev
-sudo chmod 777
+sudo chmod 777 $HOME/jenkins-slave-appdev
 echo "FROM docker.io/openshift/jenkins-slave-maven-centos7:v3.9
 USER root
 RUN yum -y install skopeo apb && \
