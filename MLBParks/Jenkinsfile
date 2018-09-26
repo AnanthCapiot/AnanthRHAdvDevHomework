@@ -141,26 +141,26 @@ podTemplate(
 		  // sh "oc env dc/mlbparks-green --from=configmap/prod-application-mongodb-config-map -n ${GUID}-parks-prod"
 
 		  // Update the Image on the Production Deployment Config
-		  sh "oc set image dc/mlbparks-green  mlbparks-green=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
+		  sh "oc set image dc/${destApp}  ${destApp}=docker-registry.default.svc:5000/${GUID}-parks-dev/mlbparks:${prodTag} -n ${GUID}-parks-prod"
 
 		  // Patch - in case if you run multiple times!!	
 		  //sh "oc patch route mlbparks -n ${GUID}-parks-prod -p '{\"spec\":{\"to\":{\"name\":\"mlbparks\"}}}'"
 			
 		  // Deploy the inactive application. 
-		  openshiftDeploy depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
+		  openshiftDeploy depCfg: destApp, namespace: '${GUID}-parks-prod', verbose: 'true', waitTime: '', waitUnit: 'sec'
 		  
-		  openshiftVerifyDeployment depCfg: 'mlbparks-green', namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
+		  openshiftVerifyDeployment depCfg: destApp, namespace: '${GUID}-parks-prod', replicaCount: '1', verbose: 'true', verifyReplicaCount: 'true', waitTime: '', waitUnit: 'sec'
 		  
-		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: 'mlbparks-green', verbose: 'true'		  
+		  openshiftVerifyService namespace: '${GUID}-parks-prod', svcName: destApp, verbose: 'true'		  
 	     }
 		
 	     stage('Switch over to new Version') {
         	//input "Switch Production?"
-        	echo "Switching Production application to mlbparks-blue."  
+        	echo "Switching Production application to mlbparks-green."  
 		echo "Existing deployment is: " 
 		sh "oc get route mlbparks -n ${GUID}-parks-prod -o jsonpath='{ .spec.to.name }'"     
-		sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"mlbparks-blue"}}}\''
-		echo "Switched Production application to mlbparks-blue.  To rollback, use reset_prod.sh"
+		sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"mlbparks-green"}}}\''
+		echo "Switched Production application to mlbparks-green.  To rollback, use reset_prod.sh"
       	    }	
 	 }
      }  
