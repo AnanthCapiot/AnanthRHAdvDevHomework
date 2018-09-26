@@ -50,7 +50,7 @@ oc expose dc mlbparks-blue --port 8080 -n ${GUID}-parks-prod
 oc env dc/mlbparks-blue --from=configmap/prod-mongodb-blue-config-map
 
 # Create MLBParks Green Application
-oc new-app ${GUID}-parks-dev/mlbparks:0.0 --name=mlbparks-green --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
+oc new-app ${GUID}-parks-dev/mlbparks:0.0 --name=mlbparks-green -e APPNAME="MLB Parks (Green)" --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
 oc set triggers dc/mlbparks-green --remove-all -n ${GUID}-parks-prod
 oc expose dc mlbparks-green --port 8080 -n ${GUID}-parks-prod
 oc env dc/mlbparks-green --from=configmap/prod-mongodb-green-config-map
@@ -67,7 +67,7 @@ oc expose dc nationalparks-blue --port 8080 -n ${GUID}-parks-prod
 oc env dc/nationalparks-blue --from=configmap/prod-mongodb-blue-config-map
 
 # Create NationalParks Green Application
-oc new-app ${GUID}-parks-dev/nationalparks:0.0 --name=nationalparks-green --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
+oc new-app ${GUID}-parks-dev/nationalparks:0.0 --name=nationalparks-green -e APPNAME="National Parks (Green)" --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
 oc set triggers dc/nationalparks-green --remove-all -n ${GUID}-parks-prod
 oc expose dc nationalparks-green --port 8080 -n ${GUID}-parks-prod
 oc env dc/nationalparks-green --from=configmap/prod-mongodb-green-config-map
@@ -84,7 +84,7 @@ oc expose dc parksmap-blue --port 8080 -n ${GUID}-parks-prod
 oc env dc/parksmap-blue --from=configmap/prod-mongodb-blue-config-map
 
 # Create ParksMap Green Application
-oc new-app ${GUID}-parks-dev/parksmap:0.0 --name=parksmap-green --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
+oc new-app ${GUID}-parks-dev/parksmap:0.0 --name=parksmap-green -e APPNAME="Parks Map (Green)" --allow-missing-imagestream-tags=true -n ${GUID}-parks-prod
 oc set triggers dc/parksmap-green --remove-all -n ${GUID}-parks-prod
 oc expose dc parksmap-green --port 8080 -n ${GUID}-parks-prod
 oc env dc/parksmap-green --from=configmap/prod-mongodb-green-config-map
