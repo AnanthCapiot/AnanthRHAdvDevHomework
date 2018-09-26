@@ -35,7 +35,7 @@ oc set resources dc/jenkins --limits=cpu=2 --requests=memory=2Gi,cpu=1 -n ${GUID
 
 oc set probe dc jenkins --readiness --initial-delay-seconds=500
 
-chmod +x setup_jenkins_docker_init.sh
+# chmod +x setup_jenkins_docker_init.sh
 
 # Sudo to Root to run docker commands
 #sudo ./setup_jenkins_docker_init.sh ${GUID} ${USER} $(oc whoami -t)
@@ -60,7 +60,7 @@ USER 1001" > Dockerfile
 
 sudo docker build . -t docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9
 
-skopeo copy --dest-tls-verify=false --dest-creds=$(oc whoami):$(oc whoami -t) docker-daemon:docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9	
+sudo skopeo copy --dest-tls-verify=false --dest-creds=$(oc whoami):$(oc whoami -t) docker-daemon:docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9 docker://docker-registry-default.apps.${CLUSTER}/${GUID}-jenkins/jenkins-slave-maven-appdev:v3.9	
 
 cd $HOME
 rm -rf $HOME/jenkins-slave-appdev
