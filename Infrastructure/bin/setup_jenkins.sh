@@ -13,6 +13,7 @@ CLUSTER=$3
 echo "Setting up Jenkins in project ${GUID}-jenkins from Git Repo ${REPO} for Cluster ${CLUSTER}"
 
 oc project ${GUID}-jenkins
+oc policy add-role-to-user edit system:serviceaccount:gpte-jenkins:jenkins -n ${GUID}-jenkins
 
 # Code to set up the Jenkins project to execute the
 # three pipelines.
