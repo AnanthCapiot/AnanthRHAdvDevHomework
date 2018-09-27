@@ -111,7 +111,7 @@ podTemplate(
         
         // Retrieve task with id "1"
         echo "Health check Nationalparks"
-        sh "curl -i  http://nationalparks-${GUID}-parks-dev.apps.na39.openshift.opentlc.com/ws/healthz/"
+        sh "curl -i  http://nationalparks-${GUID}-parks-dev.apps.${CLUSTER}/ws/healthz/"
       }
 
       // Copy Image to Nexus Docker Registry
