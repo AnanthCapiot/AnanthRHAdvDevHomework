@@ -18,6 +18,9 @@ oc policy add-role-to-user edit system:serviceaccount:${GUID}-jenkins:jenkins -n
 
 # To be Implemented by Student
 
+git reset --hard HEAD && git pull origin master
+cd $HOME/AnanthRHAdvDevHomework/Infrastructure/templates
+
 # Replicated MongoDB setup
 echo "Creating Headless Service"
 oc create -f prod-mongodb-headless-service.yml && \
