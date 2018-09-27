@@ -13,6 +13,7 @@ oc project ${GUID}-parks-dev && \
 # Code to set up the parks development project.
 
 oc policy add-role-to-user edit system:serviceaccount:${GUID}-jenkins:jenkins -n ${GUID}-parks-dev && \
+oc policy add-role-to-user edit system:serviceaccount:gpte-jenkins:jenkins -n ${GUID}-parks-dev
 
 cd $HOME/AnanthRHAdvDevHomework/Infrastructure/templates
 oc create -f dev-mongodb-configmaps.yml && \
