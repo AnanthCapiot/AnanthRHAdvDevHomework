@@ -14,8 +14,13 @@ oc project ${GUID}-parks-dev
 
 oc policy add-role-to-user edit system:serviceaccount:${GUID}-jenkins:jenkins -n ${GUID}-parks-dev
 
+cd $HOME/AnanthRHAdvDevHomework/Infrastructure/templates
+oc create -f dev-mongodb-configmaps.yml && \
+
 oc new-app --name=mongodb -e MONGODB_USER=mongodb -e MONGODB_PASSWORD=mongodb -e MONGODB_DATABASE=parks -e MONGODB_ADMIN_PASSWORD=mongodb_admin_password     registry.access.redhat.com/rhscl/mongodb-26-rhel7
 oc rollout pause dc/mongodb 
+oc env dc/mongodb --from=configmap/dev-mongodb-config-map && \
+
 echo "apiVersion: "v1"
 kind: "PersistentVolumeClaim"
 metadata:
@@ -30,6 +35,7 @@ spec:
 oc set volume dc/mongodb --add --type=persistentVolumeClaim --name=mongo-pv --claim-name=mongo-pvc --mount-path=/data --containers=*
 oc rollout resume dc/mongodb
 
+oc create configmap dev-application-mongodb-config-map --from-literal="dev-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-dev \n
 
 oc new-build --binary=true --strategy=source --name=mlbparks jboss-eap70-openshift:1.7 
 oc new-build --binary=true --strategy=source --name=nationalparks redhat-openjdk18-openshift:1.2
@@ -51,14 +57,8 @@ oc expose svc mlbparks -l type=parksmap-backend
 oc expose svc nationalparks  -l type=parksmap-backend
 oc expose svc parksmap  -l type=parksmap-backend
 
-echo "DB_HOST=mongodb
-DB_PORT=27017
-DB_USERNAME=mongodb
-DB_PASSWORD=mongodb
-DB_NAME=parks" > application-db.properties
-
-oc create configmap mlbparks-config --from-literal="application-db.properties=Placeholder"
-oc create configmap nationalparks-config --from-literal="application-db.properties=Placeholder"
+# oc create configmap mlbparks-config --from-literal="application-db.properties=Placeholder"
+# oc create configmap nationalparks-config --from-literal="application-db.properties=Placeholder"
 
 # oc env dc/mlbparks --from=configmap/mlbparks-config
 # oc env dc/nationalparks --from=configmap/nationalparks-config
