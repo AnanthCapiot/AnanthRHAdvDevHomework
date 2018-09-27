@@ -28,7 +28,7 @@ podTemplate(
 
     // Checkout Source Code
     stage('Checkout Source') {
-		git url:"https://github.com/AnanthCapiot/AnanthRHAdvDevHomework.git"
+	git url:"https://github.com/AnanthCapiot/AnanthRHAdvDevHomework.git"
     }
     
     
@@ -112,7 +112,7 @@ podTemplate(
         echo "Running Integration Tests"
         
         echo "Health check MLBParks"
-        sh "curl -i  http://mlbparks-${GUID}-parks-dev.apps.na39.openshift.opentlc.com/ws/healthz/"
+	      sh "curl -i  http://mlbparks-${GUID}-parks-dev.apps.${CLUSTER}/ws/healthz/"
       }
 
       // Copy Image to Nexus Docker Registry
