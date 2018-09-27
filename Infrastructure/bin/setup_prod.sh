@@ -56,7 +56,7 @@ oc expose dc mlbparks-green --port 8080 -n ${GUID}-parks-prod
 oc env dc/mlbparks-green --from=configmap/prod-mongodb-green-config-map
 
 # Expose Blue service as route to make blue application active
-oc expose svc/mlbparks-green --name mlbparks -n ${GUID}-parks-prod
+oc expose svc/mlbparks-blue --name mlbparks -n ${GUID}-parks-prod
 echo ">>>>>>>>>> Completed exposing MLBParks application for Blue service and is ready for Green deployment >>>>>>>>>>"
 
 echo ">>>> Creating Blue Application environment for NationalParks Application"
@@ -73,7 +73,7 @@ oc expose dc nationalparks-green --port 8080 -n ${GUID}-parks-prod
 oc env dc/nationalparks-green --from=configmap/prod-mongodb-green-config-map
 
 # Expose Blue service as route to make blue application active
-oc expose svc/nationalparks-green --name nationalparks -n ${GUID}-parks-prod
+oc expose svc/nationalparks-blue --name nationalparks -n ${GUID}-parks-prod
 echo ">>>>>>>>>> Completed exposing NationalParks application for Blue service and is ready for Green  deployment >>>>>>>>>>"
 
 echo ">>>> Creating ParksMap Application environment"
@@ -90,5 +90,5 @@ oc expose dc parksmap-green --port 8080 -n ${GUID}-parks-prod
 oc env dc/parksmap-green --from=configmap/prod-mongodb-green-config-map
 
 # Expose Blue service as route to make blue application active
-oc expose svc/parksmap-green --name parksmap -n ${GUID}-parks-prod
+oc expose svc/parksmap-blue --name parksmap -n ${GUID}-parks-prod
 echo ">>>>>>>>>> Completed exposing ParksMap application for Blue service and is ready for Green  deployment >>>>>>>>>>"
