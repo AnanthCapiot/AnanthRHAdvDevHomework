@@ -1,14 +1,15 @@
-#!/bin/bash
+# !/bin/bash
 # Reset Production Project (initial active services: Blue)
 # This sets all services to the Blue service so that any pipeline run will deploy Green
-if [ "$#" -ne 1 ]; then
-    echo "Usage:"
-    echo "  $0 GUID"
-    exit 1
-fi
 
-GUID=$1
-echo "Resetting Parks Production Environment in project ${GUID}-parks-prod to Green Services"
+# if [ "$#" -ne 1 ]; then
+#    echo "Usage:"
+#    echo "  $0 GUID"
+#    exit 1
+# fi
+
+# GUID=$1
+# echo "Resetting Parks Production Environment in project ${GUID}-parks-prod to Green Services"
 
 # Code to reset the parks production environment to make
 # all the green services/routes active.
@@ -19,7 +20,7 @@ echo "Resetting Parks Production Environment in project ${GUID}-parks-prod to Gr
 
 # To be Implemented by Student
 
-oc project ${GUID}-parks-prod
+# oc project ${GUID}-parks-prod
 
 # oc patch route mlbparks -n ${GUID}-parks-prod -p '{"spec":{"to":{"name":"mlbparks-green"}}}'
 # oc patch route nationalparks -n ${GUID}-parks-prod -p '{"spec":{"to":{"name":"nationalparks-green"}}}'
