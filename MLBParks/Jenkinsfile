@@ -159,12 +159,12 @@ podTemplate(
         	echo "Switching Production application to mlbparks-green."  
 		      echo "Existing deployment is: " 
 		      sh "oc get route mlbparks -n ${GUID}-parks-prod -o jsonpath='{ .spec.to.name }'"     
-		      //sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"mlbparks-green"}}}\''
-          sh 'oc patch route tasks -n xyz-tasks-prod -p \'{"spec":{"to":{"name":"' + destApp + '"}}}\''
+		      sh 'oc patch route mlbparks -n ${GUID}-parks-prod -p \'{"spec":{"to":{"name":"' + destApp + '"}}}\''
+		      //sh "oc patch route mlbparks -n ${GUID}-mlbparks-prod -p \'{"spec":{"to":{"name":"' + destApp + '"}}}\''
 		      echo "Switched Production application to mlbparks-green.  To rollback, use reset_prod.sh"
-      }	
-	 }
- }  
+      	  }	
+     }
+  }  
 }
 
 // Convenience Functions to read variables from the pom.xml
