@@ -9,10 +9,10 @@ fi
 GUID=$1
 echo "Setting up Parks Development Environment in project ${GUID}-parks-dev"
 
-oc project ${GUID}-parks-dev
+oc project ${GUID}-parks-dev && \
 # Code to set up the parks development project.
 
-oc policy add-role-to-user edit system:serviceaccount:${GUID}-jenkins:jenkins -n ${GUID}-parks-dev
+oc policy add-role-to-user edit system:serviceaccount:${GUID}-jenkins:jenkins -n ${GUID}-parks-dev && \
 
 cd $HOME/AnanthRHAdvDevHomework/Infrastructure/templates
 oc create -f dev-mongodb-configmaps.yml && \
@@ -33,9 +33,9 @@ spec:
       storage: "2Gi"" | oc create -f -
 
 oc set volume dc/mongodb --add --type=persistentVolumeClaim --name=mongo-pv --claim-name=mongo-pvc --mount-path=/data --containers=*
-oc rollout resume dc/mongodb
+oc rollout resume dc/mongodb && \
 
-oc create configmap dev-application-mongodb-config-map --from-literal="dev-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-dev \n
+# oc create configmap dev-application-mongodb-config-map --from-literal="dev-mongodb-connection.properties=Placeholder" -n ${GUID}-parks-dev 
 
 oc new-build --binary=true --strategy=source --name=mlbparks jboss-eap70-openshift:1.7 
 oc new-build --binary=true --strategy=source --name=nationalparks redhat-openjdk18-openshift:1.2
